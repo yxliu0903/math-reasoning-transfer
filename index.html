@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="大语言模型数学推理冗长问题：相关工作、近半年 arXiv 迁移检索与可验证论文方向。">
+  <title>数学推理冗长：相关工作与创新方向</title>
+  <style>
+    :root { --ink:#15263c; --muted:#60738a; --line:#dbe4ee; --paper:#fff; --wash:#f4f7fb; --blue:#165dba; --teal:#087f7b; --orange:#c76a1b; --shadow:0 16px 45px rgba(24,50,80,.10); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--wash); color:var(--ink); font:16px/1.75 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","Microsoft YaHei",sans-serif; }
+    a { color:var(--blue); text-decoration:none; } a:hover { text-decoration:underline; }
+    .skip { position:absolute; left:-9999px; } .skip:focus { left:1rem; top:1rem; background:#fff; padding:.5rem 1rem; z-index:5; }
+    .top { position:sticky; top:0; z-index:3; background:rgba(255,255,255,.94); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+    .top-inner { max-width:1440px; margin:auto; padding:.7rem 2rem; display:flex; align-items:center; gap:1rem; }
+    .brand { font-size:.8rem; font-weight:800; letter-spacing:.13em; color:var(--ink); white-space:nowrap; }
+    .brand em { color:var(--teal); font-style:normal; } .top-actions { margin-left:auto; display:flex; gap:.5rem; align-items:center; }
+    button,input { font:inherit; } button { border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:8px; padding:.35rem .7rem; cursor:pointer; } button:hover { border-color:var(--blue); }
+    .progress { height:3px; background:linear-gradient(90deg,var(--teal),var(--blue)); transform-origin:left; transform:scaleX(0); position:fixed; top:0; left:0; right:0; z-index:4; }
+    .hero { background:linear-gradient(135deg,#102d4c 0%,#0d5260 100%); color:#fff; padding:5.4rem max(2rem,calc((100vw - 1320px)/2)) 4.5rem; }
+    .hero-grid { max-width:1320px; margin:auto; display:grid; grid-template-columns:1.3fr .7fr; gap:4rem; align-items:end; }
+    .eyebrow { color:#94e1d8; text-transform:uppercase; font-size:.75rem; letter-spacing:.16em; font-weight:800; }
+    h1 { font-size:clamp(2.5rem,5vw,5.2rem); line-height:1.05; letter-spacing:-.055em; max-width:900px; margin:1rem 0 1.5rem; }
+    .hero h1 span { color:#8ae1d4; } .hero-copy { max-width:740px; color:#d8e7f1; font-size:1.12rem; }
+    .hero-links { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:2rem; } .hero-links a { color:#fff; border:1px solid rgba(255,255,255,.32); border-radius:99px; padding:.45rem .9rem; }
+    .hero-card { border:1px solid rgba(255,255,255,.25); border-radius:18px; padding:1.25rem; background:rgba(255,255,255,.08); }
+    .hero-card h2 { margin:.1rem 0 .8rem; font-size:1.1rem; } .hero-card p { color:#d8e7f1; margin:.55rem 0; }
+    .stats { max-width:1320px; margin:-2rem auto 0; position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); }
+    .stat { background:#fff; padding:1.15rem 1.3rem; } .stat strong { display:block; font-size:1.65rem; letter-spacing:-.03em; } .stat span { color:var(--muted); font-size:.86rem; }
+    .shell { max-width:1440px; margin:2.5rem auto; padding:0 2rem; display:grid; grid-template-columns:280px minmax(0,1fr); gap:2.3rem; align-items:start; }
+    aside { position:sticky; top:65px; max-height:calc(100vh - 85px); overflow:auto; padding-right:.4rem; } .side-title { color:var(--muted); font-weight:800; font-size:.75rem; letter-spacing:.12em; margin-bottom:.7rem; }
+    .search { width:100%; padding:.62rem .75rem; border:1px solid var(--line); border-radius:9px; background:#fff; } .toc { margin-top:.8rem; display:flex; flex-direction:column; gap:.1rem; }
+    .toc a { color:var(--muted); padding:.22rem .45rem; border-radius:6px; font-size:.88rem; line-height:1.4; } .toc a:hover,.toc a.active { background:#e7f1ff; color:var(--blue); text-decoration:none; } .toc-h3 { padding-left:1.1rem !important; font-size:.81rem !important; }
+    .side-note { border-top:1px solid var(--line); margin-top:1.2rem; padding-top:1rem; color:var(--muted); font-size:.82rem; }
+    main { min-width:0; } .content { background:#fff; box-shadow:var(--shadow); border:1px solid var(--line); border-radius:18px; padding:clamp(1.5rem,4vw,4rem); }
+    .content h2 { margin:3.2rem 0 1rem; padding-top:1.4rem; border-top:1px solid var(--line); font-size:1.8rem; letter-spacing:-.03em; } .content h2:first-child { margin-top:0; border-top:0; padding-top:0; }
+    .content h3 { margin:2.1rem 0 .65rem; font-size:1.25rem; color:#1d4d78; } .content h4 { margin:1.4rem 0 .35rem; } .content p { max-width:940px; }
+    .content li { margin:.28rem 0; } .content blockquote { border-left:4px solid #60bdb1; margin:1.2rem 0; padding:.5rem 1rem; background:#f1fbf8; }
+    .content code { background:#eef3f8; border-radius:4px; padding:.08rem .28rem; font-size:.9em; } .content pre { overflow:auto; background:#15263c; color:#e9f2fb; padding:1rem; border-radius:8px; }
+    .content table { width:100%; border-collapse:collapse; margin:1rem 0 1.5rem; font-size:.9rem; } .content th,.content td { text-align:left; vertical-align:top; border-bottom:1px solid var(--line); padding:.65rem .55rem; } .content th { background:#f1f5f9; color:#315570; }
+    .content table a { white-space:nowrap; } .note { border:1px solid #e9d7a8; border-left:4px solid var(--orange); background:#fffaf0; padding:.8rem 1rem; border-radius:6px; margin-bottom:1.5rem; }
+    .audit { margin-top:2rem; } .audit summary { cursor:pointer; color:var(--blue); font-weight:700; }
+    footer { max-width:1440px; margin:0 auto; padding:1rem 2rem 4rem; color:var(--muted); font-size:.86rem; }
+    @media (max-width:900px) { .hero-grid { grid-template-columns:1fr; gap:2rem; } .stats { margin:1rem 1rem 0; grid-template-columns:repeat(2,1fr); } .shell { grid-template-columns:1fr; padding:0 1rem; margin-top:1.5rem; } aside { position:static; max-height:none; } .toc { display:none; } aside.open .toc { display:flex; max-height:55vh; overflow:auto; } .mobile-only { display:inline-block !important; } .content { padding:1.25rem; } .top-inner { padding:.65rem 1rem; } .date { display:none; } }
+    @media (min-width:901px) { .mobile-only { display:none; } }
+    .mobile-only { display:none; } .muted { color:var(--muted); } .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a><div class="progress" id="progress"></div>
+  <header class="top"><div class="top-inner"><a class="brand" href="#top">RESEARCH <em>/</em> TRANSFER</a><div class="top-actions"><span class="date">更新时间 2026-10-09</span><button id="copy">复制页面链接</button><button id="download">下载 HTML</button><button id="print">打印 / PDF</button><button class="mobile-only" id="menu">目录</button></div></div></header>
+  <section class="hero" id="top"><div class="hero-grid"><div><div class="eyebrow">LLM Mathematical Reasoning · Literature Atlas</div><h1>数学推理为什么会<br><span>想得太久？</span></h1><p class="hero-copy">从直接相关工作出发，系统整理推理冗长、提前停止、压缩、预算控制与隐空间推理，再把近半年其他领域的可迁移方法放回数学推理场景，寻找真正还能做的新问题。</p><div class="hero-links"><a href="#0-先给结论">读完整报告 ↓</a><a href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">看推荐方向 ↗</a><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool ↗</a></div></div><div class="hero-card"><h2>阅读提示</h2><p>“发现记录”不等于“相关论文”，相关论文也不等于“已复现结果”。页面区分检索证据、全文精读和研究假设。</p><p>推荐先看：序贯风险控制 → 未来计算价值 → 反事实必要性 → 三条候选论文方向。</p></div></div></section>
+  <div class="stats"><div class="stat"><strong>27</strong><span>组检索式</span></div><div class="stat"><strong>8,140</strong><span>原始 arXiv 记录</span></div><div class="stat"><strong>6,438</strong><span>去重发现记录</span></div><div class="stat"><strong>90</strong><span>重点全文精读</span></div></div>
+  <div class="shell"><aside id="sidebar"><div class="side-title">ON THIS PAGE</div><input id="search" class="search" type="search" placeholder="搜索标题、arXiv、方法" aria-label="搜索报告"><nav class="toc"><a class="toc-h2" href="#0-先给结论">0. 先给结论</a><a class="toc-h2" href="#1-检索协议与证据等级">1. 检索协议与证据等级</a><a class="toc-h3" href="#时间范围">时间范围</a><a class="toc-h3" href="#查询与数量">查询与数量</a><a class="toc-h3" href="#来源与阅读深度">来源与阅读深度</a><a class="toc-h2" href="#2-直接相关工作谱系">2. 直接相关工作谱系</a><a class="toc-h3" href="#a-早期基础-长度不是单调收益">A. 早期基础：长度不是单调收益</a><a class="toc-h3" href="#b-近半年直接工作-2026-04-09-至-2026-10-09">B. 近半年直接工作（2026-04-09 至 2026-10-09）</a><a class="toc-h3" href="#c-已经很拥挤-建议不要单独投稿的题目">C. 已经很拥挤、建议不要单独投稿的题目</a><a class="toc-h2" href="#3-近半年可迁移领域-哪些真正有用">3. 近半年可迁移领域：哪些真正有用</a><a class="toc-h3" href="#3-1-序贯统计-conformal-risk-e-process">3.1 序贯统计、conformal risk、e-process</a><a class="toc-h3" href="#3-2-value-of-computation-value-of-information-optimal-stopping">3.2 Value of computation / value of information / optimal stopping</a><a class="toc-h3" href="#3-3-因果-credit-反事实-rollout-可验证依赖">3.3 因果 credit、反事实 rollout、可验证依赖</a><a class="toc-h3" href="#3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</a><a class="toc-h2" href="#4-三个候选新论文">4. 三个候选新论文</a><a class="toc-h3" href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">方向 1（推荐）：Calibrated Causal Minimal-Sufficient Stopping</a><a class="toc-h3" href="#方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</a><a class="toc-h3" href="#方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</a><a class="toc-h2" href="#5-推荐论文结构">5. 推荐论文结构</a><a class="toc-h2" href="#6-复现和算力建议">6. 复现和算力建议</a><a class="toc-h2" href="#7-证据和限制">7. 证据和限制</a><a class="toc-h2" href="#8-关键链接清单">8. 关键链接清单</a></nav><div class="side-note"><b>数据边界</b><p>直接相关去重 4,602 条；迁移方向去重 1,902 条；近半年首次提交且命中直接查询 1,431 条。关键词系统检索不能证明绝对穷尽。</p><p><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv 原始记录 ↗</a><br><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool 备用入口 ↗</a></p></div></aside><main id="main"><div class="content"><div class="note"><strong>研究结论先看：</strong>固定长度 penalty、关键词早停、hidden-state/entropy early exit、语义去重、单题难度预算和普通 latent reasoning 都已有直接邻居。最推荐的问题是：<b>只用当前 prefix，能否在风险约束下判断继续计算是否值得？</b></div><h1>数学推理冗长：相关工作、近半年迁移检索与论文选题</h1>
+<p>更新时间：2026-10-09（UTC）<br/>
+工作目录：<code>/inspire/hdd2/project/special-project-1/public/liuyx/play/idea/RL/transfer</code></p>
+<h2 id="0-先给结论">0. 先给结论</h2>
+<p>数学推理冗长已经是一个非常拥挤的方向。仅提出“长度奖励”“提前停止”“难度自适应预算”“隐藏状态 steering”中的任意一个，通常不足以构成新论文。近半年的直接论文已经覆盖：动态长度奖励、最优停止、语义冗余检测、注意力/不确定性监控、隐空间投影、分段信用分配、在线 rollout 编辑、元控制器和多答案预算分配。</p>
+<p>最值得继续做的方向是把不同层次的问题连起来：</p>
+<ol>
+<li><strong>Prefix-only 的可靠停止</strong>：只用当前前缀，估计“再想一段是否还有价值”，并给出可校准的错误风险/计算保证；不要把完整轨迹中的正确答案泄漏给停止器。</li>
+<li><strong>负外部性下的预算分配</strong>：多个数学题共享总 token/FLOP/延迟预算时，模型要考虑继续当前题的机会成本、放弃和回收预算；这与单题压缩不同。</li>
+<li><strong>可验证的 load-bearing reasoning</strong>：用形式证明状态、程序执行状态或可验证的依赖关系识别真正必要的步骤，压缩自然语言外壳，而不是用 LLM judge 猜步骤是否重要。</li>
+</ol>
+<p>我最推荐先做方向 1，题目可暂定为 <strong>Calibrated Causal Stopping for Minimal-Sufficient Mathematical Reasoning</strong>。核心贡献不是又一个 confidence threshold，而是：在线估计当前前缀的最小充分性、用 sibling rollouts/受控删除估计继续计算的边际价值、用 conformal/e-process 校准停止风险，并在数学题上报告 prefix-only、accuracy、token、FLOP、延迟和校准曲线。</p>
+<h2 id="1-检索协议与证据等级">1. 检索协议与证据等级</h2>
+<h3 id="时间范围">时间范围</h3>
+<ul>
+<li>近半年按 arXiv <strong>首次提交日期</strong>定义为 <code>2026-04-09</code> 至 <code>2026-10-09</code>。</li>
+<li>直接相关工作不限首次提交年份，用来建立完整方法谱系。</li>
+<li>修订版本按 arXiv 条目的首次提交日期归类；报告中的链接指向可访问的 arXiv 记录。</li>
+</ul>
+<h3 id="查询与数量">查询与数量</h3>
+<p>直接相关 13 组：<code>overthinking</code>、<code>efficient reasoning</code>、<code>reasoning/thinking budget</code>、<code>early/optimal stopping</code>、CoT compression、length control、adaptive reasoning、latent/implicit reasoning、trace pruning、survey、数学专门查询、RLVR 数学查询、reasoning-length 查询。</p>
+<p>迁移方向 14 组：sequential/e-process、conformal risk、value of computation/information、change-point/event-triggered control、rate-distortion/information bottleneck、causal credit、hierarchical RL、safe/constrained RL、adaptive computation、diffusion adaptive steps、program/proof compression、computation graph、off-policy evaluation、budgeted bandits/dynamic regret。</p>
+<p>检索审计结果：</p>
+<table>
+<thead>
+<tr>
+<th>集合</th>
+<th style="text-align: right;">查询组</th>
+<th style="text-align: right;">原始取回条目</th>
+<th style="text-align: right;">去重后记录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直接相关</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">6,202</td>
+<td style="text-align: right;">4,602</td>
+</tr>
+<tr>
+<td>迁移方向</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1,938</td>
+<td style="text-align: right;">1,902</td>
+</tr>
+<tr>
+<td>合计</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">8,140</td>
+<td style="text-align: right;">6,438</td>
+</tr>
+</tbody>
+</table>
+<p>其中近半年首次提交、命中至少一个直接查询的记录有 1,431 条。这个数字是关键词发现数，不是纳入综述的相关论文数。标题/摘要初筛后再精读；多模态、机器人、推荐、纯系统优化等不直接研究数学推理长度的工作没有当作直接证据。</p>
+<h3 id="来源与阅读深度">来源与阅读深度</h3>
+<ul>
+<li>arXiv API：身份、标题、作者、摘要、首次提交/更新时间、分类。</li>
+<li>arXiv HTML：重点论文正文、章节、参考文献；目前缓存 90 篇全文。</li>
+<li><code>papers.cool</code>：用户提供的备用摘要/导航入口。它用于 arXiv 访问不稳定时发现论文，不能替代原论文证据。</li>
+<li>不把摘要中的“code will be available”当作已有代码；代码可用性需另行核验。</li>
+</ul>
+<h2 id="2-直接相关工作谱系">2. 直接相关工作谱系</h2>
+<h3 id="a-早期基础-长度不是单调收益">A. 早期基础：长度不是单调收益</h3>
+<ul>
+<li><strong>When More is Less: Understanding Chain-of-Thought Length in LLMs</strong>，arXiv:<a href="https://arxiv.org/abs/2502.07266" rel="noopener noreferrer" target="_blank">2502.07266</a>：指出更长 CoT 可能降低准确率，为 overthinking 的经验问题提供早期分析。</li>
+<li><strong>S1: Simple test-time scaling</strong>，arXiv:<a href="https://arxiv.org/abs/2501.19393" rel="noopener noreferrer" target="_blank">2501.19393</a>：budget forcing/固定 test-time budget，是后来“长度—准确率前沿”的常用基线。</li>
+<li><strong>Chain of Draft: Thinking Faster by Writing Less</strong>，arXiv:<a href="https://arxiv.org/abs/2502.18600" rel="noopener noreferrer" target="_blank">2502.18600</a>：通过短草稿减少显式 token，属于表达压缩，不解决何时停止的可靠性。</li>
+<li><strong>L1: Controlling How Long A Reasoning Model Thinks With Reinforcement Learning</strong>，arXiv:<a href="https://arxiv.org/abs/2503.04697" rel="noopener noreferrer" target="_blank">2503.04697</a>：RL 学长度控制，是长度奖励类基线。</li>
+<li><strong>DAST: Difficulty-Adaptive Slow-Thinking for Large Reasoning Models</strong>，arXiv:<a href="https://arxiv.org/abs/2503.04472" rel="noopener noreferrer" target="_blank">2503.04472</a>：把难度和慢思考强度绑定；必须注意它原始训练/优化协议，不能把不同版本方法混称。</li>
+<li><strong>ThinkPrune</strong>，arXiv:<a href="https://arxiv.org/abs/2504.01296" rel="noopener noreferrer" target="_blank">2504.01296</a>：RL 剪枝长 CoT；属于“生成后/训练中删掉路径”的早期代表。</li>
+<li><strong>ShorterBetter</strong>，arXiv:<a href="https://arxiv.org/abs/2504.21370" rel="noopener noreferrer" target="_blank">2504.21370</a>：寻找问题的近似最优推理长度。</li>
+<li><strong>AdaptThink</strong>，arXiv:<a href="https://arxiv.org/abs/2505.13417" rel="noopener noreferrer" target="_blank">2505.13417</a>：学习何时需要显式思考；代表 mode routing。</li>
+<li><strong>ConCISE</strong>，arXiv:<a href="https://arxiv.org/abs/2505.04881" rel="noopener noreferrer" target="_blank">2505.04881</a>：置信度引导的 step-by-step 压缩；代表 confidence/trigger 类方法。</li>
+<li><strong>ConciseRL</strong>，arXiv:<a href="https://arxiv.org/abs/2505.17250" rel="noopener noreferrer" target="_blank">2505.17250</a>；<strong>HAPO</strong>，arXiv:<a href="https://arxiv.org/abs/2505.11225" rel="noopener noreferrer" target="_blank">2505.11225</a>；<strong>Walk Before You Run</strong>，arXiv:<a href="https://arxiv.org/abs/2505.21178" rel="noopener noreferrer" target="_blank">2505.21178</a>：不同形式的 concise reasoning RL。</li>
+</ul>
+<p>两篇综述适合做引用入口：<strong>Reasoning on a Budget</strong>，arXiv:<a href="https://arxiv.org/abs/2507.02076" rel="noopener noreferrer" target="_blank">2507.02076</a>；<strong>Towards Concise and Adaptive Thinking</strong>，arXiv:<a href="https://arxiv.org/abs/2507.09662" rel="noopener noreferrer" target="_blank">2507.09662</a>；另有 <strong>Don't Overthink It</strong>，arXiv:<a href="https://arxiv.org/abs/2508.02120" rel="noopener noreferrer" target="_blank">2508.02120</a>。它们的共同分类是 controllable/adaptive test-time compute、early exit、CoT compression、long–short collaboration、latent steering。</p>
+<h3 id="b-近半年直接工作-2026-04-09-至-2026-10-09">B. 近半年直接工作（2026-04-09 至 2026-10-09）</h3>
+<p>下表只列精读或高优先级记录，不等同于全部 1,431 条发现。</p>
+<table>
+<thead>
+<tr>
+<th>arXiv</th>
+<th>论文</th>
+<th>机制</th>
+<th>与新工作的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://arxiv.org/abs/2604.10739" rel="noopener noreferrer" target="_blank">2604.10739</a></td>
+<td>When More Thinking Hurts</td>
+<td>测量边际收益递减、难度相关最佳长度</td>
+<td>证明固定预算不合理，但没有 prefix 风险保证</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2604.16890" rel="noopener noreferrer" target="_blank">2604.16890</a></td>
+<td>Step-GRPO</td>
+<td>动态截断 rollout、step-aware reward，训练模型学早退</td>
+<td>训练型 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2604.17297" rel="noopener noreferrer" target="_blank">2604.17297</a></td>
+<td>CRISP</td>
+<td>intrinsic saliency 剪枝 CoT</td>
+<td>剪枝类 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2604.09150" rel="noopener noreferrer" target="_blank">2604.09150</a></td>
+<td>Think Less, Know More</td>
+<td>状态感知压缩、知识引导</td>
+<td>状态信号已有直接占位</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.07316" rel="noopener noreferrer" target="_blank">2605.07316</a></td>
+<td>Implicit Compression Regularization</td>
+<td>rollout 组中选最短正确样本，作为 shorter distribution</td>
+<td>说明不要直接 length penalty；可作为训练 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.11019" rel="noopener noreferrer" target="_blank">2605.11019</a></td>
+<td>VPG-EA</td>
+<td>变分 posterior 引导效率，双流蒸馏</td>
+<td>变分/蒸馏类 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.13165" rel="noopener noreferrer" target="_blank">2605.13165</a></td>
+<td>STOP</td>
+<td>结构化 trace、Earliest Correct Node，低数据剪枝</td>
+<td>证明“最早正确节点”已有人做；不能作为核心创新</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.17672" rel="noopener noreferrer" target="_blank">2605.17672</a></td>
+<td>PUMA</td>
+<td>语义冗余检测 + answer verification 早退</td>
+<td>语义冗余检测 baseline；没有统计保证</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.23926" rel="noopener noreferrer" target="_blank">2605.23926</a></td>
+<td>How Much Thinking is Enough?</td>
+<td>以模型自身强制终止定义 redundancy；4 模型/2 数学集；给出长度无关 outcome reward 导致过思考的理论解释</td>
+<td>必引的诊断与理论邻居，显著压缩了“发现冗余”方向的空间</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.27965" rel="noopener noreferrer" target="_blank">2605.27965</a></td>
+<td>Shape of Overthinking</td>
+<td>回溯严重度、晚期 burst、prefix-causal filtering</td>
+<td>可用于设计 backtracking signal；不要重复做 burst detector</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2605.30832" rel="noopener noreferrer" target="_blank">2605.30832</a></td>
+<td>SLAT</td>
+<td>segment-level adaptive trimming，低边际效用段选择性抑制</td>
+<td>直接覆盖 segment trimming</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.01168" rel="noopener noreferrer" target="_blank">2606.01168</a></td>
+<td>Thinking Economically</td>
+<td>层级预算：题间 depth + step 内 token budget，Pareto/Fisher pruning</td>
+<td>与层级预算高度重叠</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.07108" rel="noopener noreferrer" target="_blank">2606.07108</a></td>
+<td>DyCon</td>
+<td>step embedding 中动态难度，训练-free 难度控制</td>
+<td>难度预测/latent control 已有成熟基线</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.15070" rel="noopener noreferrer" target="_blank">2606.15070</a></td>
+<td>ASAG</td>
+<td>confidence + attention entropy；early exit、logit injection、trap jump</td>
+<td>监控/干预组合的直接邻居</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.17687" rel="noopener noreferrer" target="_blank">2606.17687</a></td>
+<td>SuCo</td>
+<td>Minimal Sufficient CoT、动态复杂度池、sufficiency-aware RL</td>
+<td>“最小充分 CoT”已有直接占位，但其阈值和训练设置仍可被严格校准</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2606.17890" rel="noopener noreferrer" target="_blank">2606.17890</a></td>
+<td>Dynamic Rollout Editing</td>
+<td>RL 训练 rollout 在线编辑以减小过思考</td>
+<td>rollout editing baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2607.00482" rel="noopener noreferrer" target="_blank">2607.00482</a></td>
+<td>DASH</td>
+<td>answer drift、分段 advantage、重复确认递减、漂移后长度惩罚</td>
+<td>处理“正确后又想错”，是重要 failure baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2607.11089" rel="noopener noreferrer" target="_blank">2607.11089</a></td>
+<td>OS-Pruner</td>
+<td>把早退建模为 optimal stopping policy，用 accuracy - λ·length</td>
+<td>名称虽是 optimal stopping，但仍是训练 policy；风险保证缺失</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2607.17188" rel="noopener noreferrer" target="_blank">2607.17188</a></td>
+<td>UPAIR</td>
+<td>hidden-state 几何 progress + entropy uncertainty 的状态诊断</td>
+<td>prefix state signal baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2607.19962" rel="noopener noreferrer" target="_blank">2607.19962</a></td>
+<td>EvoThink</td>
+<td>self-pruning + aha-moment preference optimization</td>
+<td>preference/pruning baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2607.26253" rel="noopener noreferrer" target="_blank">2607.26253</a></td>
+<td>SARA</td>
+<td>Beta posterior + 两阈值 SPRT，动态分配 RLVR rollout，放弃饱和 prompt</td>
+<td>迁移到共享数学预算很有价值，但它优化的是训练 rollout，不是单题 CoT</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2608.04771" rel="noopener noreferrer" target="_blank">2608.04771</a></td>
+<td>ReCo</td>
+<td>process reward 协调 KV cache 压缩、reflection penalty、early stop</td>
+<td>系统/缓存与生成长度联合 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2608.07968" rel="noopener noreferrer" target="_blank">2608.07968</a></td>
+<td>Thinking Hard, Not Smart</td>
+<td>共享总预算 exam benchmark；模型按题目顺序贪心、不会按价值/难度分配</td>
+<td>新的 evaluation gap，可发展成全局预算论文</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2608.21860" rel="noopener noreferrer" target="_blank">2608.21860</a></td>
+<td>ChainPrune</td>
+<td>多路径语义合并、Pareto 路径选择、DPO+SFT</td>
+<td>多路径压缩 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2608.25583" rel="noopener noreferrer" target="_blank">2608.25583</a></td>
+<td>GRIP</td>
+<td>granular reward-guided parameter interpolation</td>
+<td>参数插值/模型合并类 baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a></td>
+<td>AERA</td>
+<td>估计未来 computation 的 residual value，而不是把当前 confidence 当停止依据；nested calibration、prefix replay</td>
+<td>最接近“未来价值”方向，需明确和它的差异</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.17019" rel="noopener noreferrer" target="_blank">2609.17019</a></td>
+<td>SKIP</td>
+<td>self-knowledge probing，逐步中间答案，DPO preference</td>
+<td>step probe + DPO baseline</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.19671" rel="noopener noreferrer" target="_blank">2609.19671</a></td>
+<td>When2Think</td>
+<td>Think/NoThink 与实例难度、token cost 的 IDAC，IS+BWS</td>
+<td>直接覆盖题级模式与预算分配</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.24066" rel="noopener noreferrer" target="_blank">2609.24066</a></td>
+<td>State-Conditioned Latent Steering</td>
+<td>latent steering + progress guidance</td>
+<td>latent intervention 邻居</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.27156" rel="noopener noreferrer" target="_blank">2609.27156</a></td>
+<td>RECAP</td>
+<td>语义依赖 DAG、结构责任传播、step efficacy、GRPO step credit</td>
+<td>“依赖关系+step credit”已被直接提出；新工作应提供更强的可验证依赖或 prefix-only 因果信号</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.29664" rel="noopener noreferrer" target="_blank">2609.29664</a></td>
+<td>To Think or Not to Think</td>
+<td>训练中按问题短/长半组对比，在线方向性 length reward</td>
+<td>题级自适应 length reward 基线</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.31619" rel="noopener noreferrer" target="_blank">2609.31619</a></td>
+<td>Learning to Stop without Learning to Stop</td>
+<td>self-supervised confidence 训练停止行为</td>
+<td>停止器训练基线</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.34181" rel="noopener noreferrer" target="_blank">2609.34181</a></td>
+<td>Opt4Reasoning</td>
+<td>efficient hidden-state 区域 + QP 投影，training-free</td>
+<td>隐状态几何/投影已被直接占位</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.37304" rel="noopener noreferrer" target="_blank">2609.37304</a></td>
+<td>MetaCtrl</td>
+<td>frozen reasoner + lightweight controller；Continue/Fast/Skip/Stop Think；GRPO controller</td>
+<td>元控制器/层次 RL 基线</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.38997" rel="noopener noreferrer" target="_blank">2609.38997</a></td>
+<td>Settle</td>
+<td>用 completed traces 中 answer stability 训练 end-of-thinking token</td>
+<td>稳定答案停止已被直接占位</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.39801" rel="noopener noreferrer" target="_blank">2609.39801</a></td>
+<td>RATIO</td>
+<td>量化模型中 model-specific overthinking token 检测 + token-specific penalty</td>
+<td>量化场景特殊，不适合直接宣称通用新方法</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2610.03039" rel="noopener noreferrer" target="_blank">2610.03039</a></td>
+<td>HyperThink</td>
+<td>hypernetwork 预测 query-specific bias，直接逼近 thinking-mode response</td>
+<td>隐式 reasoning/参数 steering 邻居，需谨慎处理其时间点与代码状态</td>
+</tr>
+</tbody>
+</table>
+<h3 id="c-已经很拥挤-建议不要单独投稿的题目">C. 已经很拥挤、建议不要单独投稿的题目</h3>
+<ul>
+<li>“给 GRPO 加一个固定长度 penalty”。已有 L1、ConciseRL、RECAP、ICR、DDCA/长度方向 reward 等大量基线，而且固定 penalty 会把 overthinking 推向 underthinking。</li>
+<li>“检测 wait/alternatively/again 然后提前停止”。已有 ConCISE、Step-GRPO、ASAG、PUMA、Settle 等；仅换关键词不够。</li>
+<li>“用 hidden state/attention entropy 做 early exit”。已有 DyCon、ASAG、UPAIR、Opt4Reasoning、PUMA 等。</li>
+<li>“用语义相似度删除重复 step”。已有 PUMA、ChainPrune、CRISP、STOP、RECAP。</li>
+<li>“用难度预测分配单题长度”。已有 DAST、DyCon、When2Think、Thinking Economically、To Think or Not to Think。</li>
+<li>“用 latent space 做无 token reasoning”。已有 latent reasoning、Opt4Reasoning、HyperThink、SST/looped transformer 等；若做，必须给出新的计算/可验证理论，而非只换 latent encoder。</li>
+</ul>
+<h2 id="3-近半年可迁移领域-哪些真正有用">3. 近半年可迁移领域：哪些真正有用</h2>
+<h3 id="3-1-序贯统计-conformal-risk-e-process">3.1 序贯统计、conformal risk、e-process</h3>
+<p>代表工作：</p>
+<ul>
+<li><strong>Conformal Thinking: Risk Control for Reasoning on a Compute Budget</strong>，arXiv:<a href="https://arxiv.org/abs/2602.03814" rel="noopener noreferrer" target="_blank">2602.03814</a>：对 reasoning confidence 设置 upper/lower threshold，用 distribution-free risk control 控制早停错误和“难题无法解”的提前退出。</li>
+<li><strong>Conformal Selective Acting</strong>，arXiv:<a href="https://arxiv.org/abs/2605.20270" rel="noopener noreferrer" target="_blank">2605.20270</a>：面向 RLVR 部署流的 anytime/pathwise selective risk 控制。</li>
+<li><strong>MARS</strong>，arXiv:<a href="https://arxiv.org/abs/2606.12935" rel="noopener noreferrer" target="_blank">2606.12935</a>：parallel self-consistency 的 margin-adversarial stopping，估计继续采样造成的 vote switch。</li>
+<li><strong>Calibrated e-CUSUM Decoding</strong>，arXiv:<a href="https://arxiv.org/abs/2607.11317" rel="noopener noreferrer" target="_blank">2607.11317</a>：指出 token log-probability martingale 不能检测 confident repetition；用 repetition + entropy alarm，再做 e-process/CUSUM 校准。</li>
+<li><strong>Efficient Sequential Evaluation of LLMs</strong>，arXiv:<a href="https://arxiv.org/abs/2607.17409" rel="noopener noreferrer" target="_blank">2607.17409</a>：confidence sequence、testing-by-betting、主动查询。</li>
+<li><strong>Uncertainty-Aware Sequential Decision Rules for Event-Triggered LLM Invocation</strong>，arXiv:<a href="https://arxiv.org/abs/2607.13048" rel="noopener noreferrer" target="_blank">2607.13048</a>：把昂贵 LLM 调用写成风险触发 stopping，给出 regret/trigger 形式化。</li>
+</ul>
+<p>可迁移点：将“停止”从 heuristic threshold 改成 <strong>对未来错误风险或边际收益的可校准序贯决策</strong>。数学题的 verifier 提供了天然的离线 calibration label；推理时只使用前缀。</p>
+<p>局限：conformal 的 exchangeability、e-process 的 conditional-mean null、分布漂移和每题内部强相关都不能直接假设成立。论文必须把保证写成“在 calibration/test exchangeability 或指定条件下”的保证，并做 shift stress test；不要宣称任意自回归轨迹都有严格 coverage。</p>
+<h3 id="3-2-value-of-computation-value-of-information-optimal-stopping">3.2 Value of computation / value of information / optimal stopping</h3>
+<p>代表工作：</p>
+<ul>
+<li><strong>AERA</strong>，arXiv:<a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a>：未来 residual utility，承认 checkpoint correctness 非单调。</li>
+<li><strong>Early Verdicts, Better Budgets</strong>，arXiv:<a href="https://arxiv.org/abs/2607.26253" rel="noopener noreferrer" target="_blank">2607.26253</a>：Beta posterior + SPRT 的 sequential rollout allocation。</li>
+<li><strong>Thinking Hard, Not Smart</strong>，arXiv:<a href="https://arxiv.org/abs/2608.07968" rel="noopener noreferrer" target="_blank">2608.07968</a>：提出共享总预算下的数学/代码 exam-style benchmark，暴露按顺序贪心和无价值感知分配。</li>
+<li><strong>Uncertainty-Aware Sequential Decision Rules</strong>，arXiv:<a href="https://arxiv.org/abs/2607.13048" rel="noopener noreferrer" target="_blank">2607.13048</a>：事件触发式昂贵模型调用。</li>
+</ul>
+<p>可迁移点：把每一段 CoT 视为一项有成本的实验，决策不是“当前答案够不够自信”，而是“下一段的 expected value of computation 是否超过 token/FLOP opportunity cost”。</p>
+<p>局限：需要估计 continuation 的 counterfactual value；若训练标签使用完整未来轨迹，必须证明部署时没有泄漏。</p>
+<h3 id="3-3-因果-credit-反事实-rollout-可验证依赖">3.3 因果 credit、反事实 rollout、可验证依赖</h3>
+<p>代表工作：</p>
+<ul>
+<li><strong>CRAFT</strong>，arXiv:<a href="https://arxiv.org/abs/2606.29476" rel="noopener noreferrer" target="_blank">2606.29476</a>：复用 GRPO sibling rollouts，估计 teacher-preferred token 的 counterfactual signed credit。</li>
+<li><strong>Policy-Conditioned Counterfactual Credit</strong>，arXiv:<a href="https://arxiv.org/abs/2606.05263" rel="noopener noreferrer" target="_blank">2606.05263</a>：删除、语义替换、证据替换、tool-output perturbation；用 doubly robust estimator。</li>
+<li><strong>Skill Reuse as Compression</strong>，arXiv:<a href="https://arxiv.org/abs/2605.31509" rel="noopener noreferrer" target="_blank">2605.31509</a>：MDL skill dictionary、segmentation cost、PAC-Bayes 泛化界。</li>
+<li><strong>Adaptive state-action abstractions via rate-distortion</strong>，arXiv:<a href="https://arxiv.org/abs/2606.06123" rel="noopener noreferrer" target="_blank">2606.06123</a>：Bellman residual 与 abstraction error/bisimulation metric 的性能证书，动态调整状态/动作抽象粒度。</li>
+</ul>
+<p>可迁移点：不要把“长”当作唯一坏处；估计一个 step 被删除/替换后对最终可验证成功的影响，并用 dependency/MDL 保留能复用的结构。</p>
+<p>局限：完整 leave-one-out 很贵；语义替换的干预有效性需要额外假设；自然语言数学 trace 的依赖图若由 LLM judge 产生，容易把 judge 偏差当作过程监督。</p>
+<h3 id="3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</h3>
+<p>可迁移点：把 CoT 看成发送给同一个模型的“内部通信码”。压缩目标应是：在给定 token/bit rate 下最小化答案风险或 proof-state distortion，而非最小化文本长度。可把 reasoning prefix 映射成 state abstraction，定义任务相关 distortion（最终答案、verifier state、后续 logit 分布）和 rate（token/FLOP/KV bytes）。</p>
+<p>已有直接占位：<a href="https://arxiv.org/abs/2603.08462" rel="noopener noreferrer" target="_blank">2603.08462</a> <strong>Reasoning as Compression: Conditional Information Bottleneck</strong>、<a href="https://arxiv.org/abs/2609.34181" rel="noopener noreferrer" target="_blank">2609.34181</a> <strong>Opt4Reasoning</strong>、<a href="https://arxiv.org/abs/2605.07316" rel="noopener noreferrer" target="_blank">2605.07316</a> <strong>ICR</strong>、<a href="https://arxiv.org/abs/2608.04771" rel="noopener noreferrer" target="_blank">2608.04771</a> <strong>ReCo</strong>。因此新的贡献必须加入可验证的 distortion 或动态抽象理论；单独使用 IB/QP 不足。</p>
+<h2 id="4-三个候选新论文">4. 三个候选新论文</h2>
+<h3 id="方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">方向 1（推荐）：Calibrated Causal Minimal-Sufficient Stopping</h3>
+<p><strong>问题定义</strong>：给定数学题 <code>x</code> 和当前已生成 prefix <code>z_≤t</code>，决定继续生成、停止并回答，或回到一个安全 checkpoint；目标是在 token/FLOP 成本下最小化错误，同时控制早停风险。</p>
+<p><strong>核心算法</strong>：</p>
+<ol>
+<li>在句子/semantic-step 边界产生 tentative answer 和 verifier-compatible score。</li>
+<li>用同题 sibling prefixes 或轻量 continuation probes 估计“再生成一个 block 后答案改变/变正确”的边际收益；用 answer drift/backtracking、answer distribution、prefix embedding、verifier score 作为 prefix-only features。</li>
+<li>用 counterfactual deletion/continuation 数据估计 step necessity；训练一个保守的 marginal-value model，而不是直接预测“最终是否正确”。</li>
+<li>用 conformal risk control 或 nonnegative e-process 校准两个事件：提前停止导致错误、继续计算没有足够收益。达到风险预算且边际收益上界低于成本时停止。</li>
+<li>可选训练阶段：用 calibrated stopping labels 做轻量 LoRA；推理阶段不需要 gold answer，也不需要完整轨迹。</li>
+</ol>
+<p><strong>与已有工作的区分</strong>：</p>
+<ul>
+<li>比 Conformal Thinking（<a href="https://arxiv.org/abs/2602.03814" rel="noopener noreferrer" target="_blank">2602.03814</a>）多了 future-value/counterfactual necessity，且针对单条 CoT prefix；不是只校准 confidence threshold。</li>
+<li>比 AERA（<a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a>）多了数学 CoT 的 token/step-level stopping 和 causal deletion/sibling credit；AERA 主要是并行 response allocation。</li>
+<li>比 PUMA/Settle/ASAG 多了风险校准与非单调边际收益处理。</li>
+<li>比 RECAP（<a href="https://arxiv.org/abs/2609.27156" rel="noopener noreferrer" target="_blank">2609.27156</a>）不依赖完整 trace 的 LLM-judge dependency DAG 作为在线停止条件。</li>
+</ul>
+<p><strong>最小实验</strong>：Qwen2.5-Math-7B 或 DeepSeek-R1-Distill-Qwen-7B；GSM8K、MATH-500、AIME24/25、AMC23；训练只用 GSM8K/MATH 的 calibration split，测试跨难度和跨 benchmark；比较 Vanilla、固定 budget、ConCISE/PUMA、OS-Pruner、Conformal Thinking、AERA、UPAIR/ASAG；报告 accuracy、tokens、FLOPs、wall latency、early-stop error、risk coverage、ECE、selective risk、困难题分层结果。</p>
+<p><strong>必须有的消融</strong>：去掉 counterfactual value、去掉 conformal/e-process、只用 confidence、只用 answer agreement、使用完整轨迹标签（泄漏 upper bound）与 prefix-only 标签。</p>
+<p><strong>可证伪失败判据</strong>：如果在 held-out benchmark 上 calibrated 方法不能在相同 accuracy 下节省至少 20% token，或 risk coverage 在 shift split 明显失效，论文主张不成立。</p>
+<h3 id="方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</h3>
+<p><strong>问题定义</strong>：一批数学题共享总预算 <code>B</code>，每题可继续生成 CoT、停止、重启或放弃。最大化总得分，而不是把每题独立压短。</p>
+<p><strong>核心算法</strong>：把每个题当前状态建成 arm，估计继续一个 block 的 expected accuracy gain / cost；采用 budgeted bandit / knapsack policy（可先用 UCB/Thompson，再用 RL 学 policy），当某题的上置信界低于其他题的机会成本时切换或放弃。加入 verifier-aware partial credit 和 hard problem rescue。</p>
+<p><strong>已有邻居与差异</strong>：<a href="https://arxiv.org/abs/2608.07968" rel="noopener noreferrer" target="_blank">2608.07968</a> 主要是 failure benchmark；<a href="https://arxiv.org/abs/2607.26253" rel="noopener noreferrer" target="_blank">2607.26253</a> 主要是 RLVR 训练 rollout 的 SARA；<a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a> 主要是单题并行 response allocation。新的贡献应是数学 CoT 内部 continuation + 题间共享预算的统一 controller，并提供 allocation regret/utility 分析。</p>
+<p><strong>风险</strong>：容易被审稿人认为是系统调度而非 reasoning；必须展示它改变了“何时放弃/何时回收预算”的 reasoning behavior，并在单题固定预算 baseline 上证明全局 utility 增益。</p>
+<h3 id="方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</h3>
+<p><strong>问题定义</strong>：自然语言 CoT 中大量文字不是数学证明状态的变化。目标是只保留会改变 proof state、程序状态或可验证约束的 load-bearing steps。</p>
+<p><strong>核心算法</strong>：对 Lean/miniF2F 或可执行数学程序，用 proof state delta/AST dependency 定义 exact necessity；学习把多个自然语言步骤压成一个 verifier-preserving macro。对 MATH/GSM8K 用 symbolic calculator/verifier 作为弱替代，并明确区分“可验证证明压缩”和“自然语言可读性压缩”。</p>
+<p><strong>已有邻居与差异</strong>：STOP/RECAP/ChainPrune 都依赖结构或 LLM judge；<a href="https://arxiv.org/abs/2605.23926" rel="noopener noreferrer" target="_blank">2605.23926</a> 已用强制终止量化冗余；本方向的差异是 verifier-grounded 的必要性标签，减少 judge 主观性。</p>
+<p><strong>风险</strong>：只在 Lean 上有效可能成为 formal-methods 论文；自然数学推广难。适合做第二阶段或与方向 1 结合。</p>
+<h2 id="5-推荐论文结构">5. 推荐论文结构</h2>
+<p>建议先写方向 1，结构如下：</p>
+<ol>
+<li>重新定义 overthinking：不是 <code>length</code> 本身，而是 prefix 后继续计算的 <strong>calibrated residual utility</strong> 与 <strong>causal necessity</strong> 不匹配。</li>
+<li>提出 prefix-only controller 与风险目标。</li>
+<li>给出 calibration/e-process 的条件性保证；明确自回归相关、distribution shift 和 verifier noise 的假设。</li>
+<li>在数学 benchmark 上比较 accuracy–token–latency frontier，并单独报告 early-stop error 与 underthinking。</li>
+<li>做 counterfactual ablation：answer stability、backtracking、step deletion、sibling continuation 各自贡献。</li>
+<li>跨模型/跨数据集/跨难度验证；至少一个完全不参与 calibration 的 benchmark。</li>
+</ol>
+<p>不要把论文贡献写成“我们组合了 conformal + causal + RL”。应写成一个可检验的问题：<strong>能否在不读取未来轨迹和 gold answer 的条件下，用 prefix-observable evidence 给出风险受控的最小充分停止决策？</strong></p>
+<h2 id="6-复现和算力建议">6. 复现和算力建议</h2>
+<ul>
+<li>第一版不必训练 32B；用 Qwen2.5-Math-7B、DeepSeek-R1-Distill-Qwen-7B、Qwen3-8B 中的两个即可。</li>
+<li>先生成一次完整轨迹缓存，再离线构造 prefix checkpoints；停止器训练/校准必须按 problem-level split，不能把同题不同 prefix 分到 train/test 两边。</li>
+<li>报告真实端到端 latency/FLOPs；只报告 completion token savings 会被 AERA、ReCo 等工作指出的 controller/probing/KV 成本反驳。</li>
+<li>用 <code>temperature=0.6, top-p=0.95</code> 等公开模型设置时，保存 seed、prompt、verifier 版本和所有 raw traces。</li>
+<li>数学正确性用至少两个 verifier 或人工抽样；不要把 self-consistency agreement 当作正确性的充分条件。</li>
+</ul>
+<h2 id="7-证据和限制">7. 证据和限制</h2>
+<ul>
+<li>本轮检索使用 27 组查询，arXiv API 全部完成分页，原始响应保存在 <code>raw/queries/</code>；去重发现库在 <code>data/discovery.json</code> / <code>.csv</code>。</li>
+<li>90 篇重点论文已抓取 arXiv HTML 和章节/参考文献；其余发现记录只有标题/摘要，不应被描述为“已精读”。</li>
+<li>关键词检索不能证明绝对穷尽；未系统爬取每篇论文的所有后向/前向引用，也没有保证未发表或仅会议页面论文被覆盖。</li>
+<li>近半年部分 2026 条目可能是预印本、标题/摘要或项目页状态，机构声望、GitHub star 和“code coming soon”均不作为质量证明。</li>
+<li>本报告中的方向是经过邻近工作排查后的研究假设，不是已证明的新颖性；投稿前仍需对最新版本、会议论文和代码进行逐项 novelty audit。</li>
+</ul>
+<h2 id="8-关键链接清单">8. 关键链接清单</h2>
+<p>直接邻居：</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2605.23926">How Much Thinking is Enough?</a></li>
+<li><a href="https://arxiv.org/abs/2602.03814">Conformal Thinking</a></li>
+<li><a href="https://arxiv.org/abs/2608.27964">AERA</a></li>
+<li><a href="https://arxiv.org/abs/2609.27156">RECAP</a></li>
+<li><a href="https://arxiv.org/abs/2605.17672">PUMA / Stop When Reasoning Converges</a></li>
+<li><a href="https://arxiv.org/abs/2607.11089">OS-Pruner</a></li>
+<li><a href="https://arxiv.org/abs/2609.19671">When2Think</a></li>
+<li><a href="https://arxiv.org/abs/2609.37304">MetaCtrl</a></li>
+<li><a href="https://arxiv.org/abs/2609.34181">Opt4Reasoning</a></li>
+<li><a href="https://arxiv.org/abs/2608.21860">ChainPrune</a></li>
+<li><a href="https://arxiv.org/abs/2608.07968">Thinking Hard, Not Smart</a></li>
+</ul>
+<p>迁移邻居：</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2605.20270">Conformal Selective Acting</a></li>
+<li><a href="https://arxiv.org/abs/2606.12935">MARS</a></li>
+<li><a href="https://arxiv.org/abs/2607.11317">Calibrated e-CUSUM Decoding</a></li>
+<li><a href="https://arxiv.org/abs/2607.17409">Efficient Sequential Evaluation of LLMs</a></li>
+<li><a href="https://arxiv.org/abs/2606.29476">CRAFT</a></li>
+<li><a href="https://arxiv.org/abs/2606.05263">Policy-Conditioned Counterfactual Credit</a></li>
+<li><a href="https://arxiv.org/abs/2606.06123">Adaptive state-action abstractions via rate-distortion</a></li>
+<li><a href="https://arxiv.org/abs/2605.31509">Skill Reuse as Compression</a></li>
+<li><a href="https://arxiv.org/abs/2607.13048">Uncertainty-Aware Sequential Decision Rules</a></li>
+</ul><details class="audit"><summary>展开 27 组检索审计（用于复核范围）</summary><table><thead><tr><th>查询组</th><th>原始结果</th><th>取回</th><th>状态</th></tr></thead><tbody><tr><td>d01_overthinking</td><td>354</td><td>354</td><td>complete</td></tr><tr><td>d02_efficient_reasoning</td><td>708</td><td>708</td><td>complete</td></tr><tr><td>d03_budget</td><td>363</td><td>363</td><td>complete</td></tr><tr><td>d04_stopping</td><td>320</td><td>320</td><td>complete</td></tr><tr><td>d05_compression</td><td>139</td><td>139</td><td>complete</td></tr><tr><td>d06_length_control</td><td>157</td><td>157</td><td>complete</td></tr><tr><td>d07_adaptive</td><td>865</td><td>865</td><td>complete</td></tr><tr><td>d08_latent</td><td>429</td><td>429</td><td>complete</td></tr><tr><td>d09_prune</td><td>1,657</td><td>1,657</td><td>complete</td></tr><tr><td>d10_surveys</td><td>70</td><td>70</td><td>complete</td></tr><tr><td>d11_math_specific</td><td>539</td><td>539</td><td>complete</td></tr><tr><td>d12_verifiable_math</td><td>372</td><td>372</td><td>complete</td></tr><tr><td>d13_reasoning_length</td><td>229</td><td>229</td><td>complete</td></tr><tr><td>t01_sequential</td><td>181</td><td>181</td><td>complete</td></tr><tr><td>t02_risk_control</td><td>68</td><td>68</td><td>complete</td></tr><tr><td>t03_value_information</td><td>105</td><td>105</td><td>complete</td></tr><tr><td>t04_change</td><td>265</td><td>265</td><td>complete</td></tr><tr><td>t05_rate_distortion</td><td>310</td><td>310</td><td>complete</td></tr><tr><td>t06_causal</td><td>123</td><td>123</td><td>complete</td></tr><tr><td>t07_hierarchy</td><td>343</td><td>343</td><td>complete</td></tr><tr><td>t08_safe_rl</td><td>211</td><td>211</td><td>complete</td></tr><tr><td>t09_adaptive_compute</td><td>72</td><td>72</td><td>complete</td></tr><tr><td>t10_inference_dynamics</td><td>35</td><td>35</td><td>complete</td></tr><tr><td>t11_program</td><td>15</td><td>15</td><td>complete</td></tr><tr><td>t12_computation_graph</td><td>99</td><td>99</td><td>complete</td></tr><tr><td>t13_offpolicy</td><td>40</td><td>40</td><td>complete</td></tr><tr><td>t14_dynamic_regret</td><td>71</td><td>71</td><td>complete</td></tr></tbody></table></details></div></main></div>
+  <footer><p><b>数学推理长度与跨领域迁移研究</b> · 静态阅读页 · 2026-10-09 UTC</p><p>本页由本地审计的 Markdown 报告生成；报告中的 arXiv 链接在新窗口打开。研究方向是经邻近工作排查后的假设，不等同于已证明的新颖性或已复现实验。</p><p>源码与数据目录：<code>/play/idea/RL/transfer</code> · 页面不依赖第三方脚本、字体或登录。</p></footer>
+  <script>
+    const $ = s => document.querySelector(s);
+    const progress = $('#progress');
+    addEventListener('scroll', () => { const max = document.documentElement.scrollHeight - innerHeight; progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`; }, {passive:true});
+    $('#search').addEventListener('input', e => { const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.content h2,.content h3,.content h4,.content p,.content li,.content td').forEach(n=>n.classList.toggle('match', q && n.textContent.toLowerCase().includes(q))); });
+    $('#copy').addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.href); $('#copy').textContent='已复制'; setTimeout(()=>$('#copy').textContent='复制页面链接',1400); } catch { prompt('复制页面链接', location.href); } });
+    $('#download').addEventListener('click', () => { const blob=new Blob(['<!doctype html>
+'+document.documentElement.outerHTML],{type:'text/html;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='math-reasoning-transfer.html'; a.click(); URL.revokeObjectURL(a.href); });
+    $('#print').addEventListener('click', () => print());
+    $('#menu').addEventListener('click', () => $('#sidebar').classList.toggle('open'));
+    document.querySelectorAll('.toc a').forEach(a => a.addEventListener('click', () => document.querySelectorAll('.toc a').forEach(x=>x.classList.toggle('active',x===a))));
+  </script>
+</body></html>
