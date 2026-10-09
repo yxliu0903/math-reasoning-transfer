@@ -131,8 +131,24 @@
 <td>主要是量子码、watermark、模型容错和输出校验，未检出数学 CoT redundancy coding</td>
 <td>保留为低优先级探索，不能直接声称新颖</td>
 </tr>
+<tr>
+<td>sketch/outline/skeleton</td>
+<td>Sketch-and-Verify、SPEAR、Answer-then-Edit、Planned Test-Time Scaling 已覆盖 reasoning sketch/skeleton</td>
+<td>淘汰“先草图再展开”类想法</td>
+</tr>
+<tr>
+<td>barrier/viability</td>
+<td>未检出直接数学 CoT barrier stopping，但已有 agent/机器人 runtime assurance 和 viable-failure prefix 近邻</td>
+<td>只有定义 verifier slack 和可证明安全集后才保留；暂不列主候选</td>
+</tr>
+<tr>
+<td>freshness/queueing</td>
+<td>多篇 LLM serving、KV/cache、agent freshness 和 queue-aware scheduler</td>
+<td>纯系统/服务调度淘汰</td>
+</tr>
 </tbody>
 </table>
+<p>全量覆盖状态：近半年 arXiv 元数据总量约 196,908 条；OAI-PMH 全类别通道已验证，首个 7 天块抓到 5 个分页、每页约 1,300 条，因 resumption token 服务端响应慢而中止，完整 OAI 下载尚未完成。已经完成的是全量总数确认 + 多组跨学科机制首屏/窄查询 + 重点全文撞车审计，不能称“196,908 篇全部逐篇阅读”。</p>
 <p>因此，全学科扫描没有让候选无限膨胀，而是把“跨领域方法”压缩成四条仍需要 pilot 的路线：Competing-Risk Hazard、IRT-Hazard、Any-Stage Validity under Endogenous Logging、Verifier Barrier Reasoning。</p>
 <h3 id="时间范围">时间范围</h3>
 <ul>
