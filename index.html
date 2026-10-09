@@ -52,7 +52,7 @@
   <header class="top"><div class="top-inner"><a class="brand" href="#top">RESEARCH <em>/</em> TRANSFER</a><div class="top-actions"><span class="date">更新时间 2026-10-09</span><button id="copy">复制页面链接</button><button id="download">下载 HTML</button><button id="print">打印 / PDF</button><button class="mobile-only" id="menu">目录</button></div></div></header>
   <section class="hero" id="top"><div class="hero-grid"><div><div class="eyebrow">LLM Mathematical Reasoning · Literature Atlas</div><h1>数学推理为什么会<br><span>想得太久？</span></h1><p class="hero-copy">从直接相关工作出发，系统整理推理冗长、提前停止、压缩、预算控制与隐空间推理，再把近半年其他领域的可迁移方法放回数学推理场景，寻找真正还能做的新问题。</p><div class="hero-links"><a href="#0-先给结论">读完整报告 ↓</a><a href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">看推荐方向 ↗</a><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool ↗</a></div></div><div class="hero-card"><h2>阅读提示</h2><p>“发现记录”不等于“相关论文”，相关论文也不等于“已复现结果”。页面区分检索证据、全文精读和研究假设。</p><p>推荐先看：序贯风险控制 → 未来计算价值 → 反事实必要性 → 三条候选论文方向。</p></div></div></section>
   <div class="stats"><div class="stat"><strong>27</strong><span>组检索式</span></div><div class="stat"><strong>8,140</strong><span>原始 arXiv 记录</span></div><div class="stat"><strong>6,438</strong><span>去重发现记录</span></div><div class="stat"><strong>90</strong><span>重点全文精读</span></div></div>
-  <div class="shell"><aside id="sidebar"><div class="side-title">ON THIS PAGE</div><input id="search" class="search" type="search" placeholder="搜索标题、arXiv、方法" aria-label="搜索报告"><nav class="toc"><a class="toc-h2" href="#0-先给结论">0. 先给结论</a><a class="toc-h2" href="#1-检索协议与证据等级">1. 检索协议与证据等级</a><a class="toc-h3" href="#时间范围">时间范围</a><a class="toc-h3" href="#查询与数量">查询与数量</a><a class="toc-h3" href="#来源与阅读深度">来源与阅读深度</a><a class="toc-h2" href="#2-直接相关工作谱系">2. 直接相关工作谱系</a><a class="toc-h3" href="#a-早期基础-长度不是单调收益">A. 早期基础：长度不是单调收益</a><a class="toc-h3" href="#b-近半年直接工作-2026-04-09-至-2026-10-09">B. 近半年直接工作（2026-04-09 至 2026-10-09）</a><a class="toc-h3" href="#c-已经很拥挤-建议不要单独投稿的题目">C. 已经很拥挤、建议不要单独投稿的题目</a><a class="toc-h2" href="#3-近半年可迁移领域-哪些真正有用">3. 近半年可迁移领域：哪些真正有用</a><a class="toc-h3" href="#3-1-序贯统计-conformal-risk-e-process">3.1 序贯统计、conformal risk、e-process</a><a class="toc-h3" href="#3-2-value-of-computation-value-of-information-optimal-stopping">3.2 Value of computation / value of information / optimal stopping</a><a class="toc-h3" href="#3-3-因果-credit-反事实-rollout-可验证依赖">3.3 因果 credit、反事实 rollout、可验证依赖</a><a class="toc-h3" href="#3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</a><a class="toc-h2" href="#4-三个候选新论文">4. 三个候选新论文</a><a class="toc-h3" href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">方向 1（推荐）：Calibrated Causal Minimal-Sufficient Stopping</a><a class="toc-h3" href="#方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</a><a class="toc-h3" href="#方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</a><a class="toc-h2" href="#5-推荐论文结构">5. 推荐论文结构</a><a class="toc-h2" href="#6-复现和算力建议">6. 复现和算力建议</a><a class="toc-h2" href="#7-证据和限制">7. 证据和限制</a><a class="toc-h2" href="#8-关键链接清单">8. 关键链接清单</a></nav><div class="side-note"><b>数据边界</b><p>直接相关去重 4,602 条；迁移方向去重 1,902 条；近半年首次提交且命中直接查询 1,431 条。关键词系统检索不能证明绝对穷尽。</p><p><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv 原始记录 ↗</a><br><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool 备用入口 ↗</a></p></div></aside><main id="main"><div class="content"><div class="note"><strong>研究结论先看：</strong>固定长度 penalty、关键词早停、hidden-state/entropy early exit、语义去重、单题难度预算和普通 latent reasoning 都已有直接邻居。最推荐的问题是：<b>只用当前 prefix，能否在风险约束下判断继续计算是否值得？</b></div><h1>数学推理冗长：相关工作、近半年迁移检索与论文选题</h1>
+  <div class="shell"><aside id="sidebar"><div class="side-title">ON THIS PAGE</div><input id="search" class="search" type="search" placeholder="搜索标题、arXiv、方法" aria-label="搜索报告"><nav class="toc"><a class="toc-h2" href="#0-先给结论">0. 先给结论</a><a class="toc-h2" href="#1-检索协议与证据等级">1. 检索协议与证据等级</a><a class="toc-h3" href="#时间范围">时间范围</a><a class="toc-h3" href="#查询与数量">查询与数量</a><a class="toc-h3" href="#来源与阅读深度">来源与阅读深度</a><a class="toc-h2" href="#2-直接相关工作谱系">2. 直接相关工作谱系</a><a class="toc-h3" href="#a-早期基础-长度不是单调收益">A. 早期基础：长度不是单调收益</a><a class="toc-h3" href="#b-近半年直接工作-2026-04-09-至-2026-10-09">B. 近半年直接工作（2026-04-09 至 2026-10-09）</a><a class="toc-h3" href="#c-已经很拥挤-建议不要单独投稿的题目">C. 已经很拥挤、建议不要单独投稿的题目</a><a class="toc-h2" href="#3-近半年可迁移领域-哪些真正有用">3. 近半年可迁移领域：哪些真正有用</a><a class="toc-h3" href="#3-1-序贯统计-conformal-risk-e-process">3.1 序贯统计、conformal risk、e-process</a><a class="toc-h3" href="#3-2-value-of-computation-value-of-information-optimal-stopping">3.2 Value of computation / value of information / optimal stopping</a><a class="toc-h3" href="#3-3-因果-credit-反事实-rollout-可验证依赖">3.3 因果 credit、反事实 rollout、可验证依赖</a><a class="toc-h3" href="#3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</a><a class="toc-h2" href="#4-先讲共同背景-三条方向到底在解决什么">4. 先讲共同背景：三条方向到底在解决什么</a><a class="toc-h3" href="#4-0-1-为什么-想得更久-会提高能力-也会浪费计算">4.0.1 为什么“想得更久”会提高能力，也会浪费计算</a><a class="toc-h3" href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">方向 1（推荐）：Calibrated Causal Minimal-Sufficient Stopping</a><a class="toc-h3" href="#方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</a><a class="toc-h3" href="#方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</a><a class="toc-h2" href="#5-推荐论文结构">5. 推荐论文结构</a><a class="toc-h2" href="#6-复现和算力建议">6. 复现和算力建议</a><a class="toc-h2" href="#7-证据和限制">7. 证据和限制</a><a class="toc-h2" href="#8-关键链接清单">8. 关键链接清单</a></nav><div class="side-note"><b>数据边界</b><p>直接相关去重 4,602 条；迁移方向去重 1,902 条；近半年首次提交且命中直接查询 1,431 条。关键词系统检索不能证明绝对穷尽。</p><p><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv 原始记录 ↗</a><br><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool 备用入口 ↗</a></p></div></aside><main id="main"><div class="content"><div class="note"><strong>研究结论先看：</strong>固定长度 penalty、关键词早停、hidden-state/entropy early exit、语义去重、单题难度预算和普通 latent reasoning 都已有直接邻居。最推荐的问题是：<b>只用当前 prefix，能否在风险约束下判断继续计算是否值得？</b></div><h1>数学推理冗长：相关工作、近半年迁移检索与论文选题</h1>
 <p>更新时间：2026-10-09（UTC）<br/>
 工作目录：<code>本地研究目录</code></p>
 <h2 id="0-先给结论">0. 先给结论</h2>
@@ -409,37 +409,146 @@
 <h3 id="3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</h3>
 <p>可迁移点：把 CoT 看成发送给同一个模型的“内部通信码”。压缩目标应是：在给定 token/bit rate 下最小化答案风险或 proof-state distortion，而非最小化文本长度。可把 reasoning prefix 映射成 state abstraction，定义任务相关 distortion（最终答案、verifier state、后续 logit 分布）和 rate（token/FLOP/KV bytes）。</p>
 <p>已有直接占位：<a href="https://arxiv.org/abs/2603.08462" rel="noopener noreferrer" target="_blank">2603.08462</a> <strong>Reasoning as Compression: Conditional Information Bottleneck</strong>、<a href="https://arxiv.org/abs/2609.34181" rel="noopener noreferrer" target="_blank">2609.34181</a> <strong>Opt4Reasoning</strong>、<a href="https://arxiv.org/abs/2605.07316" rel="noopener noreferrer" target="_blank">2605.07316</a> <strong>ICR</strong>、<a href="https://arxiv.org/abs/2608.04771" rel="noopener noreferrer" target="_blank">2608.04771</a> <strong>ReCo</strong>。因此新的贡献必须加入可验证的 distortion 或动态抽象理论；单独使用 IB/QP 不足。</p>
-<h2 id="4-三个候选新论文">4. 三个候选新论文</h2>
+<h2 id="4-先讲共同背景-三条方向到底在解决什么">4. 先讲共同背景：三条方向到底在解决什么</h2>
+<h3 id="4-0-1-为什么-想得更久-会提高能力-也会浪费计算">4.0.1 为什么“想得更久”会提高能力，也会浪费计算</h3>
+<p>大语言模型回答一道数学题时，可以直接输出答案，也可以先生成一串隐藏或显式的中间文字：列式、试算、检查、改错、重新推导。这串中间文字就是这里说的 <strong>reasoning trace / CoT</strong>。模型每生成一个 token，都要再运行一次网络，所以 8,000 个推理 token 的成本大约是 800 个 token 的十倍量级；长上下文还会让注意力和 KV cache 继续变贵。</p>
+<p>长推理有真实好处：难题需要更多尝试和自我纠错。但它不是“越长越好”。模型可能已经得到正确答案，却继续说“再检查一下”；也可能在正确答案后重新计算，把正确答案改错。这叫 <strong>overthinking</strong>。反过来，如果我们过早截断，模型还没有完成关键推导就被迫回答，这叫 <strong>underthinking</strong>。</p>
+<p>因此，目标不是简单地让所有回答变短，而是让模型在“已经足够”和“还需要继续”之间做出正确决策。用一个简单例子表示：</p>
+<blockquote>
+<p>题目：一个数先增加 20%，再减少 20%，最后变成 96，原数是多少？</p>
+<p>有效步骤可能只有：设原数为 x，得到 1.2×0.8x=96，所以 x=100。模型随后又重复代入、重述题目、怀疑百分比方向，生成几百个 token。重复部分不一定增加正确率，却增加成本和答案漂移风险。</p>
+</blockquote>
+<p>三条候选方向研究的是三个不同的决策层次：</p>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>决策对象</th>
+<th>一句话问题</th>
+<th>直观比喻</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方向 1</td>
+<td>一道题的一条推理轨迹</td>
+<td><strong>现在该不该停？</strong></td>
+<td>开车时判断是否已经到达</td>
+</tr>
+<tr>
+<td>方向 2</td>
+<td>多道题之间的共享计算</td>
+<td><strong>下一笔预算给哪道题？</strong></td>
+<td>考试时间不够时先做哪题</td>
+</tr>
+<tr>
+<td>方向 3</td>
+<td>已有轨迹里的具体步骤</td>
+<td><strong>哪些步骤可以删？</strong></td>
+<td>删除证明草稿中的废话，但不能删掉支撑结论的桥梁</td>
+</tr>
+</tbody>
+</table>
+<p>方向 1 是在线停止；方向 2 是跨题资源分配；方向 3 是事后或训练时的可验证压缩。它们都减少 token，但研究问题、输入输出和实验指标完全不同。</p>
 <h3 id="方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">方向 1（推荐）：Calibrated Causal Minimal-Sufficient Stopping</h3>
-<p><strong>问题定义</strong>：给定数学题 <code>x</code> 和当前已生成 prefix <code>z_≤t</code>，决定继续生成、停止并回答，或回到一个安全 checkpoint；目标是在 token/FLOP 成本下最小化错误，同时控制早停风险。</p>
-<p><strong>核心算法</strong>：</p>
+<h4>背景：现在的早停方法在做什么</h4>
+<p>现在最常见的早停方法，在推理过程中每隔一段检查一次：模型对当前答案的置信度是否足够高、多个候选答案是否一致、attention entropy 是否下降。如果超过固定阈值，就停止生成。</p>
+<p>问题是：<strong>“当前看起来很自信”不等于“再想下去不会变好”，也不等于“现在停下不会错”。</strong> 简单题可能在很短的前缀就够了；难题可能暂时给出一个看似稳定但错误的答案。固定阈值还很难跨模型、跨题型复用。</p>
+<h4>这篇论文真正要问什么</h4>
+<p>给定题目 <code>x</code> 和已经生成的前缀 <code>z_≤t</code>，只看当前能看到的内容，决定：</p>
 <ol>
-<li>在句子/semantic-step 边界产生 tentative answer 和 verifier-compatible score。</li>
-<li>用同题 sibling prefixes 或轻量 continuation probes 估计“再生成一个 block 后答案改变/变正确”的边际收益；用 answer drift/backtracking、answer distribution、prefix embedding、verifier score 作为 prefix-only features。</li>
-<li>用 counterfactual deletion/continuation 数据估计 step necessity；训练一个保守的 marginal-value model，而不是直接预测“最终是否正确”。</li>
-<li>用 conformal risk control 或 nonnegative e-process 校准两个事件：提前停止导致错误、继续计算没有足够收益。达到风险预算且边际收益上界低于成本时停止。</li>
-<li>可选训练阶段：用 calibrated stopping labels 做轻量 LoRA；推理阶段不需要 gold answer，也不需要完整轨迹。</li>
+<li>现在停止并回答；</li>
+<li>再生成一个小段推理；</li>
+<li>回到前一个安全节点重新尝试。</li>
 </ol>
-<p><strong>与已有工作的区分</strong>：</p>
+<p>目标不是平均变短，而是在一个明确的错误风险预算内，尽量少花 token。</p>
+<h4>用刚才的题目举例</h4>
+<p>模型生成“设原数为 x，1.2×0.8x=96，所以 x=100”后，停止器先让模型做一个短 answer probe，得到候选答案 100。它还会看：</p>
 <ul>
-<li>比 Conformal Thinking（<a href="https://arxiv.org/abs/2602.03814" rel="noopener noreferrer" target="_blank">2602.03814</a>）多了 future-value/counterfactual necessity，且针对单条 CoT prefix；不是只校准 confidence threshold。</li>
-<li>比 AERA（<a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a>）多了数学 CoT 的 token/step-level stopping 和 causal deletion/sibling credit；AERA 主要是并行 response allocation。</li>
-<li>比 PUMA/Settle/ASAG 多了风险校准与非单调边际收益处理。</li>
-<li>比 RECAP（<a href="https://arxiv.org/abs/2609.27156" rel="noopener noreferrer" target="_blank">2609.27156</a>）不依赖完整 trace 的 LLM-judge dependency DAG 作为在线停止条件。</li>
+<li>最近几个前缀的答案是否稳定；</li>
+<li>模型是否已经进入“重复检查/答案漂移”模式；</li>
+<li>再生成一个 block 后，历史上有多大概率把错误改对；</li>
+<li>当前前缀删掉某一步后，答案是否仍然正确。</li>
 </ul>
-<p><strong>最小实验</strong>：Qwen2.5-Math-7B 或 DeepSeek-R1-Distill-Qwen-7B；GSM8K、MATH-500、AIME24/25、AMC23；训练只用 GSM8K/MATH 的 calibration split，测试跨难度和跨 benchmark；比较 Vanilla、固定 budget、ConCISE/PUMA、OS-Pruner、Conformal Thinking、AERA、UPAIR/ASAG；报告 accuracy、tokens、FLOPs、wall latency、early-stop error、risk coverage、ECE、selective risk、困难题分层结果。</p>
-<p><strong>必须有的消融</strong>：去掉 counterfactual value、去掉 conformal/e-process、只用 confidence、只用 answer agreement、使用完整轨迹标签（泄漏 upper bound）与 prefix-only 标签。</p>
-<p><strong>可证伪失败判据</strong>：如果在 held-out benchmark 上 calibrated 方法不能在相同 accuracy 下节省至少 20% token，或 risk coverage 在 shift split 明显失效，论文主张不成立。</p>
+<p>如果“继续一段”的预期收益很低，而且在校准集上这种停止规则的错误率满足用户给定的 1% 或 5% 风险目标，就停；如果答案稳定但模型经常在这一状态下继续发现关键步骤，就继续。</p>
+<h4>方法分成四步</h4>
+<ol>
+<li><strong>观察当前前缀</strong>：在自然句子/步骤边界读取 tentative answer、答案分布、回溯信号和隐藏状态特征。</li>
+<li><strong>估计继续的价值</strong>：用同一道题的 sibling rollouts、短 continuation probe 或受控删除，估计“再花 128 个 token 能否提高最终正确率”。这不是只预测最终对错，而是预测下一段计算的增益。</li>
+<li><strong>估计步骤必要性</strong>：如果去掉当前步骤后模型仍能得到同样答案，这一步可能是冗余；如果去掉后答案崩溃，就不应停在这里。</li>
+<li><strong>校准风险</strong>：在独立 calibration set 上选择阈值，使早停错误率或 selective risk 达到预先指定的目标。部署时不能读取 gold answer，也不能读取未来轨迹。</li>
+</ol>
+<h4>它和另外两条有什么区别</h4>
+<ul>
+<li>它只处理 <strong>一题的一条正在生成的轨迹</strong>；不负责决定其他题拿多少预算。</li>
+<li>它的动作是 <strong>stop / continue / restart</strong>；不是删除已经生成的任意中间句子。</li>
+<li>它的关键卖点是 <strong>风险可校准</strong> 和 <strong>继续计算的边际价值</strong>，不是又一个 confidence threshold。</li>
+</ul>
+<h4>怎么做实验</h4>
+<p>用 Qwen2.5-Math-7B 或 DeepSeek-R1-Distill-Qwen-7B，在 GSM8K、MATH-500、AMC、AIME 上测试。训练/校准只使用问题级切分的一部分，测试集完全不参与阈值选择。比较 vanilla、固定 budget、PUMA/ConCISE、OS-Pruner、Conformal Thinking、AERA 等方法。</p>
+<p>除了 accuracy 和 token，还必须报告：早停错误率、风险覆盖率、ECE、FLOPs、真实延迟、简单题/难题分层结果，以及分布外题目的风险失效情况。</p>
+<h4>什么结果说明它失败</h4>
+<p>如果在相同准确率下不能节省约 20% token，或者在难度变化/分布偏移后风险覆盖明显失效，那么“风险校准的最小充分停止”就没有站住。</p>
 <h3 id="方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</h3>
-<p><strong>问题定义</strong>：一批数学题共享总预算 <code>B</code>，每题可继续生成 CoT、停止、重启或放弃。最大化总得分，而不是把每题独立压短。</p>
-<p><strong>核心算法</strong>：把每个题当前状态建成 arm，估计继续一个 block 的 expected accuracy gain / cost；采用 budgeted bandit / knapsack policy（可先用 UCB/Thompson，再用 RL 学 policy），当某题的上置信界低于其他题的机会成本时切换或放弃。加入 verifier-aware partial credit 和 hard problem rescue。</p>
-<p><strong>已有邻居与差异</strong>：<a href="https://arxiv.org/abs/2608.07968" rel="noopener noreferrer" target="_blank">2608.07968</a> 主要是 failure benchmark；<a href="https://arxiv.org/abs/2607.26253" rel="noopener noreferrer" target="_blank">2607.26253</a> 主要是 RLVR 训练 rollout 的 SARA；<a href="https://arxiv.org/abs/2608.27964" rel="noopener noreferrer" target="_blank">2608.27964</a> 主要是单题并行 response allocation。新的贡献应是数学 CoT 内部 continuation + 题间共享预算的统一 controller，并提供 allocation regret/utility 分析。</p>
-<p><strong>风险</strong>：容易被审稿人认为是系统调度而非 reasoning；必须展示它改变了“何时放弃/何时回收预算”的 reasoning behavior，并在单题固定预算 baseline 上证明全局 utility 增益。</p>
+<h4>背景：现实中预算往往是“整场考试共享”的</h4>
+<p>大多数论文让每道题各自拥有一个独立上限：每题最多生成 8,000 token。这样做掩盖了一个实际问题：如果一次请求里有 20 道题，总共只有 100,000 token，某一道题多花 5,000 token，就意味着其他题少了 5,000 token。</p>
+<p>这时，“每道题都压短一点”不是最优策略。更重要的是判断：<strong>继续当前题的下一段推理，带来的得分是否值得牺牲另一道题的预算？</strong> 这就是 opportunity cost（机会成本）。</p>
+<h4>一个具体例子</h4>
+<p>现在有 3 道题、总预算 1,000 token：</p>
+<ul>
+<li>题 A 很简单，再给 100 token 基本不会增加得分；</li>
+<li>题 B 中等，再给 200 token 有较大概率从错变对；</li>
+<li>题 C 很难，再给 500 token 仍然只有很小成功率。</li>
+</ul>
+<p>逐题独立的模型可能按输入顺序把 600 token 耗在 A 上，再把剩余预算给 B 和 C。共享预算控制器应该及时停止 A，把预算转给 B；对 C 观察一小段后，如果继续的成功概率仍然很低，就放弃或只保留一个低成本尝试。</p>
+<h4>这篇论文具体研究什么</h4>
+<p>把每道题当前的状态看成一个“候选项目”：它有当前答案、已经花费的 token、继续一个 block 后变好的概率、以及继续所需成本。每轮选择一个项目继续，直到总预算用完。</p>
+<p>可以先用容易解释的 UCB/Thompson sampling：如果某题的“可能收益上界 / 额外成本”低于其他题，就停止给它分配预算。以后再用 RL 学习更复杂的切换策略。</p>
+<h4>它和方向 1、3 的区别</h4>
+<ul>
+<li>方向 1 问“一道题现在停不停”；方向 2 问“下一笔计算给哪一道题”。</li>
+<li>方向 2 不要求删掉某道题已经写出的证明步骤，重点是题目之间的预算竞争。</li>
+<li>方向 3 是识别和删除 load-bearing 之外的步骤；方向 2 可以直接使用完整轨迹，但要决定是否继续投入。</li>
+</ul>
+<h4>怎么证明它有用</h4>
+<p>建立 shared-budget math benchmark：随机组成不同难度和分值的题组，给一个总 token/FLOP 上限。比较平均每题独立预算、按输入顺序处理、oracle difficulty allocation 和新控制器。</p>
+<p>指标是总得分、每题得分、总 token、预算利用率、放弃后的救援率、切换次数和 allocation regret。必须证明它比“每题固定预算”提高整组总分，而不是只让某几道题变好。</p>
+<h4>主要风险</h4>
+<p>如果只展示更聪明的调度，而没有展示模型何时放弃、何时回收预算、何时重新进入困难题，审稿人可能认为这只是系统调度，不是 reasoning 论文。需要把题内状态变化和跨题决策同时报告。</p>
 <h3 id="方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</h3>
-<p><strong>问题定义</strong>：自然语言 CoT 中大量文字不是数学证明状态的变化。目标是只保留会改变 proof state、程序状态或可验证约束的 load-bearing steps。</p>
-<p><strong>核心算法</strong>：对 Lean/miniF2F 或可执行数学程序，用 proof state delta/AST dependency 定义 exact necessity；学习把多个自然语言步骤压成一个 verifier-preserving macro。对 MATH/GSM8K 用 symbolic calculator/verifier 作为弱替代，并明确区分“可验证证明压缩”和“自然语言可读性压缩”。</p>
-<p><strong>已有邻居与差异</strong>：STOP/RECAP/ChainPrune 都依赖结构或 LLM judge；<a href="https://arxiv.org/abs/2605.23926" rel="noopener noreferrer" target="_blank">2605.23926</a> 已用强制终止量化冗余；本方向的差异是 verifier-grounded 的必要性标签，减少 judge 主观性。</p>
-<p><strong>风险</strong>：只在 Lean 上有效可能成为 formal-methods 论文；自然数学推广难。适合做第二阶段或与方向 1 结合。</p>
+<h4>背景：文字步骤和数学状态不是一回事</h4>
+<p>一段 CoT 可能写了十句话，但真正改变数学状态的只有两三步。例如解方程 <code>2x+3=11</code> 时，真正关键的是“移项得到 2x=8”和“除以 2 得到 x=4”；“我们现在来仔细检查”“重新说明题目条件”是语言层面的内容，不一定改变证明状态。</p>
+<p>现有的语义相似度剪枝或 LLM judge 可以猜某句话是否重复，但它们可能把“看起来相似、实际承担逻辑作用”的步骤误删。更可靠的办法是让 verifier 告诉我们：删除这一步后，形式证明状态、程序 AST 或可执行约束是否仍然成立。</p>
+<h4>这篇论文具体研究什么</h4>
+<p>不是问“这句话读起来像不像废话”，而是问：<strong>删除或合并这一步后，解题状态是否保持等价？</strong></p>
+<p>在 Lean/miniF2F 中，proof state 是当前还剩哪些目标、有哪些假设；在可执行数学程序中，程序状态是变量和约束；在普通 MATH/GSM8K 中，可以用符号计算器、答案 verifier 或最终方程作为较弱的替代。</p>
+<h4>一个具体例子</h4>
+<p>原始推理：</p>
+<ol>
+<li>设原数为 <code>x</code>。</li>
+<li>增加 20% 后是 <code>1.2x</code>。</li>
+<li>再减少 20% 后是 <code>0.8×1.2x</code>。</li>
+<li>题目说结果为 96，所以 <code>0.96x=96</code>。</li>
+<li>因此 <code>x=100</code>。</li>
+<li>再次把 100 代回去检查，仍然是 96。</li>
+</ol>
+<p>如果 verifier 已经确认第 5 步满足约束，第 6 步可能是可删的；但如果第 4 步的系数写错，删除第 6 步会放过错误。压缩器应该保留会改变约束状态的步骤，而不是简单保留最短文字。</p>
+<h4>方法流程</h4>
+<ol>
+<li>把完整 CoT 切成步骤，并记录每一步前后的 proof state / AST / verifier state。</li>
+<li>做删除、合并、重排等干预，检查最终证明或程序是否仍可执行。</li>
+<li>用这些“删了仍成立 / 删了就失败”的标签训练压缩器或宏步骤生成器。</li>
+<li>约束压缩后的轨迹在 verifier 上通过，并比较 token、可读性和泛化。</li>
+</ol>
+<h4>它和另外两条的区别</h4>
+<ul>
+<li>方向 3 主要在 <strong>已有轨迹生成之后或训练时压缩内容</strong>；不是在线决定何时停止。</li>
+<li>它的核心证据是 <strong>verifier-preserving</strong>，不是置信度或长度相关性。</li>
+<li>它最适合 Lean、形式化数学和可执行程序；普通自然语言数学只能做弱验证，因此研究范围要说清楚。</li>
+</ul>
+<h4>怎么做实验和主要风险</h4>
+<p>第一阶段可在 Lean/miniF2F 或带程序 verifier 的数学任务上做严格实验，再迁移到 MATH/GSM8K。指标包括证明通过率、token 压缩率、删除错误率、自动验证时间和人工可读性。必须和 STOP、RECAP、ChainPrune、纯语义相似度剪枝比较。</p>
+<p>主要风险是它可能只对形式化数学有效，最后变成 formal-methods 论文；自然语言数学的 verifier 太弱时，不能声称“严格证明步骤必要性”。因此更适合作为第二阶段，或作为方向 1 的反事实必要性模块。</p>
 <h2 id="5-推荐论文结构">5. 推荐论文结构</h2>
 <p>建议先写方向 1，结构如下：</p>
 <ol>
