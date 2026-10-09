@@ -51,7 +51,7 @@
   <a class="skip" href="#main">跳到正文</a><div class="progress" id="progress"></div>
   <header class="top"><div class="top-inner"><a class="brand" href="#top">RESEARCH <em>/</em> TRANSFER</a><div class="top-actions"><span class="date">更新时间 2026-10-09</span><button id="copy">复制页面链接</button><button id="download">下载 HTML</button><button id="print">打印 / PDF</button><button class="mobile-only" id="menu">目录</button></div></div></header>
   <section class="hero" id="top"><div class="hero-grid"><div><div class="eyebrow">LLM Mathematical Reasoning · Literature Atlas</div><h1>数学推理为什么会<br><span>想得太久？</span></h1><p class="hero-copy">从直接相关工作出发，系统整理推理冗长、提前停止、压缩、预算控制与隐空间推理，再把近半年其他领域的可迁移方法放回数学推理场景，寻找真正还能做的新问题。</p><div class="hero-links"><a href="#0-先给结论">读完整报告 ↓</a><a href="#方向-1-推荐-calibrated-causal-minimal-sufficient-stopping">看推荐方向 ↗</a><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool ↗</a></div></div><div class="hero-card"><h2>阅读提示</h2><p>“发现记录”不等于“相关论文”，相关论文也不等于“已复现结果”。页面区分检索证据、全文精读和研究假设。</p><p>推荐先看：序贯风险控制 → 未来计算价值 → 反事实必要性 → 三条候选论文方向。</p></div></div></section>
-  <div class="stats"><div class="stat"><strong>27</strong><span>组检索式</span></div><div class="stat"><strong>8,140</strong><span>原始 arXiv 记录</span></div><div class="stat"><strong>6,438</strong><span>去重发现记录</span></div><div class="stat"><strong>99</strong><span>重点全文精读</span></div></div>
+  <div class="stats"><div class="stat"><strong>27</strong><span>组检索式</span></div><div class="stat"><strong>8,140</strong><span>原始 arXiv 记录</span></div><div class="stat"><strong>6,438</strong><span>去重发现记录</span></div><div class="stat"><strong>118</strong><span>重点全文精读</span></div></div>
   <div class="shell"><aside id="sidebar"><div class="side-title">ON THIS PAGE</div><input id="search" class="search" type="search" placeholder="搜索标题、arXiv、方法" aria-label="搜索报告"><nav class="toc"><a class="toc-h2" href="#0-先给结论">0. 先给结论</a><a class="toc-h2" href="#1-检索协议与证据等级">1. 检索协议与证据等级</a><a class="toc-h3" href="#时间范围">时间范围</a><a class="toc-h3" href="#查询与数量">查询与数量</a><a class="toc-h3" href="#来源与阅读深度">来源与阅读深度</a><a class="toc-h2" href="#2-直接相关工作谱系">2. 直接相关工作谱系</a><a class="toc-h3" href="#a-早期基础-长度不是单调收益">A. 早期基础：长度不是单调收益</a><a class="toc-h3" href="#b-近半年直接工作-2026-04-09-至-2026-10-09">B. 近半年直接工作（2026-04-09 至 2026-10-09）</a><a class="toc-h3" href="#c-已经很拥挤-建议不要单独投稿的题目">C. 已经很拥挤、建议不要单独投稿的题目</a><a class="toc-h2" href="#3-近半年可迁移领域-哪些真正有用">3. 近半年可迁移领域：哪些真正有用</a><a class="toc-h3" href="#3-1-序贯统计-conformal-risk-e-process">3.1 序贯统计、conformal risk、e-process</a><a class="toc-h3" href="#3-2-value-of-computation-value-of-information-optimal-stopping">3.2 Value of computation / value of information / optimal stopping</a><a class="toc-h3" href="#3-3-因果-credit-反事实-rollout-可验证依赖">3.3 因果 credit、反事实 rollout、可验证依赖</a><a class="toc-h3" href="#3-4-率失真-信息瓶颈-动态抽象">3.4 率失真、信息瓶颈、动态抽象</a><a class="toc-h2" href="#4-先讲共同背景-三条方向到底在解决什么">4. 先讲共同背景：三条方向到底在解决什么</a><a class="toc-h3" href="#4-0-2-重要的撞车审计结论-2026-10-09">4.0.2 重要的撞车审计结论（2026-10-09）</a><a class="toc-h3" href="#4-0-1-为什么-想得更久-会提高能力-也会浪费计算">4.0.1 为什么“想得更久”会提高能力，也会浪费计算</a><a class="toc-h3" href="#方向-1-原始候选-已发现高度撞车-calibrated-causal-minimal-sufficient-stopping">方向 1（原始候选，已发现高度撞车）：Calibrated Causal Minimal-Sufficient Stopping</a><a class="toc-h3" href="#方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</a><a class="toc-h3" href="#方向-3-proof-state-verifier-grounded-reasoning-compression">方向 3：Proof-State / Verifier-Grounded Reasoning Compression</a><a class="toc-h2" href="#5-推荐论文结构">5. 推荐论文结构</a><a class="toc-h2" href="#6-复现和算力建议">6. 复现和算力建议</a><a class="toc-h2" href="#7-证据和限制">7. 证据和限制</a><a class="toc-h2" href="#8-关键链接清单">8. 关键链接清单</a></nav><div class="side-note"><b>数据边界</b><p>直接相关去重 4,602 条；迁移方向去重 1,902 条；近半年首次提交且命中直接查询 1,431 条。关键词系统检索不能证明绝对穷尽。</p><p><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv 原始记录 ↗</a><br><a href="https://papers.cool/" target="_blank" rel="noopener noreferrer">papers.cool 备用入口 ↗</a></p></div></aside><main id="main"><div class="content"><div class="note"><strong>研究结论先看：</strong>固定长度 penalty、关键词早停、hidden-state/entropy early exit、语义去重、单题难度预算和普通 latent reasoning 都已有直接邻居。最推荐的问题是：<b>只用当前 prefix，能否在风险约束下判断继续计算是否值得？</b></div><h1>数学推理冗长：相关工作、近半年迁移检索与论文选题</h1>
 <p>更新时间：2026-10-09（UTC）<br/>
 工作目录：<code>本地研究目录</code></p>
@@ -63,7 +63,14 @@
 <li><strong>负外部性下的预算分配</strong>：多个数学题共享总 token/FLOP/延迟预算时，模型要考虑继续当前题的机会成本、放弃和回收预算；这与单题压缩不同。</li>
 <li><strong>可验证的 load-bearing reasoning</strong>：用形式证明状态、程序执行状态或可验证的依赖关系识别真正必要的步骤，压缩自然语言外壳，而不是用 LLM judge 猜步骤是否重要。</li>
 </ol>
-<p>最初我推荐方向 1，但严格撞车审计后需要修正：<strong>不能直接把它作为新算法投稿</strong>。它适合作为基线复现/负结果审计，或者只有在证明“非交换在线风险保证”或“停止动作的反事实因果界”确实没有先例后，才重新收窄成新论文。当前更稳妥的主线是优先评估方向 2 或方向 3。</p>
+<p>最初我推荐方向 1，但严格撞车审计后需要修正：<strong>不能直接把它作为新算法投稿</strong>。方向 2 和方向 3 也分别撞上了近期的 rollout allocation、multi-attribute verification、counterfactual skip、set-level deletion 和 Lean proof compression 工作。重做后的结论不是“这三个都能直接做”，而是：先做候选机制的撞车审计，再从下面三个仍有相对清晰缺口的方向中选一个。</p>
+<p>重做后的优先级：</p>
+<ol>
+<li><strong>Competing-Risk Hazard Control for Mathematical Reasoning</strong>：把继续推理可能导致的“成功完成、答案漂移、循环/超时”作为竞争事件来建模；目前没有检出直接把 competing-risk hazard 用于数学 CoT stopping 的论文。这是当前最像新方法的方向，但需要严格证明它不是普通 learned stopper 的换名。</li>
+<li><strong>Any-Stage-Valid Stopping under Endogenous Logging and Model Drift</strong>：把停止动作导致的“后续 prefix 不再被观测”与模型在线更新结合起来，研究非 exchangeable 条件下的风险保证。COINS 和 Counterfactual Online CP 提供统计工具，但目前没有检出直接针对数学 CoT 的对应实现；这是理论风险最高的方向。</li>
+<li><strong>Censored Reasoning Curves</strong>：把 token budget 截断视为 right-censoring，同时估计 time-to-correct、time-to-drift 和 time-to-loop。它更偏 measurement/benchmark 论文，方法创新弱一些，但可作为方向 1 的可靠基础，也能揭露现有 accuracy–length 曲线的偏差。</li>
+</ol>
+<p>方向 2 的“多题共享预算”与方向 3 的“可验证压缩”仍可做，但必须改成上述新问题的特定版本；原来的宽泛表述已经不安全。</p>
 <h2 id="1-检索协议与证据等级">1. 检索协议与证据等级</h2>
 <h3 id="时间范围">时间范围</h3>
 <ul>
@@ -74,6 +81,7 @@
 <h3 id="查询与数量">查询与数量</h3>
 <p>直接相关 13 组：<code>overthinking</code>、<code>efficient reasoning</code>、<code>reasoning/thinking budget</code>、<code>early/optimal stopping</code>、CoT compression、length control、adaptive reasoning、latent/implicit reasoning、trace pruning、survey、数学专门查询、RLVR 数学查询、reasoning-length 查询。</p>
 <p>迁移方向 14 组：sequential/e-process、conformal risk、value of computation/information、change-point/event-triggered control、rate-distortion/information bottleneck、causal credit、hierarchical RL、safe/constrained RL、adaptive computation、diffusion adaptive steps、program/proof compression、computation graph、off-policy evaluation、budgeted bandits/dynamic regret。</p>
+<p>第二轮撞车窄查询新增 22 组，覆盖 hazard/survival、competing risk、active sensing、submodular allocation、optimal experimental design、anytime validity、adaptive logging、budgeted bandit、multi-fidelity、program/proof compression、counterfactual credit、proof-state 和 early-exit；首屏最多取回 200 条，不能把这轮数字当作完整分页 census。</p>
 <p>检索审计结果：</p>
 <table>
 <thead>
@@ -105,11 +113,13 @@
 </tr>
 </tbody>
 </table>
+<p>第二轮撞车窄查询：1,795 条首屏取回，去重 1,724 条；它用于发现近邻，不替代逐篇全文审计。</p>
 <p>其中近半年首次提交、命中至少一个直接查询的记录有 1,431 条。这个数字是关键词发现数，不是纳入综述的相关论文数。标题/摘要初筛后再精读；多模态、机器人、推荐、纯系统优化等不直接研究数学推理长度的工作没有当作直接证据。</p>
 <h3 id="来源与阅读深度">来源与阅读深度</h3>
 <ul>
 <li>arXiv API：身份、标题、作者、摘要、首次提交/更新时间、分类。</li>
-<li>arXiv HTML：重点论文正文、章节、参考文献；目前缓存 90 篇全文。</li>
+<li>arXiv HTML：重点论文正文、章节、参考文献；目前缓存 99 篇全文。</li>
+<li>第二轮新增全文审计重点包括 CROP、LearnStop、BLADE、Stable Answers、SuCo、InfoTree、APIVIS、BMA-GAI、LW2S、DRSR、LeanPolish、COINS、Counterfactual Online CP、CLR、HARP 和 Dynamic Budget Allocation for LLM Evaluation。</li>
 <li><code>papers.cool</code>：用户提供的备用摘要/导航入口。它用于 arXiv 访问不稳定时发现论文，不能替代原论文证据。</li>
 <li>不把摘要中的“code will be available”当作已有代码；代码可用性需另行核验。</li>
 </ul>
