@@ -489,6 +489,51 @@
 <p>除了 accuracy 和 token，还必须报告：早停错误率、风险覆盖率、ECE、FLOPs、真实延迟、简单题/难题分层结果，以及分布外题目的风险失效情况。</p>
 <h4>什么结果说明它失败</h4>
 <p>如果在相同准确率下不能节省约 20% token，或者在难度变化/分布偏移后风险覆盖明显失效，那么“风险校准的最小充分停止”就没有站住。</p>
+<h4>成本会不会把节省的 token 吃掉</h4>
+<p>会，取决于实现方式。下面把最朴素但昂贵的版本，和真正适合部署的版本分开：</p>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>训练/校准时做什么</th>
+<th>部署时做什么</th>
+<th>成本判断</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>朴素研究版</td>
+<td>每个前缀都做多个 sibling rollout、删除当前步骤、再生成 answer probe</td>
+<td>每隔很短一段重复 probe</td>
+<td>训练数据生成可能是基线的 2–10 倍；线上也可能得不偿失，不建议作为最终系统</td>
+</tr>
+<tr>
+<td>推荐论文版</td>
+<td>只在离线 calibration set 上做少量 block-level continuation/deletion；训练一个小的 stop/value head</td>
+<td>每 256–512 token 或语义步骤读一次当前 hidden state；大多数时候只跑一个小分类头</td>
+<td>额外 transformer 计算接近 0；校准和数据生成是一次性成本</td>
+</tr>
+<tr>
+<td>保守线上版</td>
+<td>在推荐论文版基础上保留少量 probe 数据</td>
+<td>只有停止头“不确定”时才做一次短 answer probe，并要求连续两次信号一致</td>
+<td>简单题通常能节省很多 token；难题只增加少量 probe 成本</td>
+</tr>
+</tbody>
+</table>
+<p>部署时最重要的工程原则是：<strong>sibling rollout 和步骤删除不能放在线上</strong>。它们用于离线学习“继续计算是否值得”的监督信号；线上只使用当前前缀已经产生的 hidden state、答案置信度、答案漂移/重复信号和一个训练好的 value head。</p>
+<p>如果模型本来就在逐 token 生成，最后一层 hidden state 已经存在，接一个线性层或两层 MLP 来预测 <code>stop / continue / uncertain</code> 几乎没有额外成本。真正会增加成本的是重新生成一份答案 probe。这个 probe 可以利用已有 KV cache，不必重新计算整个 prefix；例如每 512 token 检查一次、每次只生成约 16–32 个答案 token，成本通常远低于让模型继续生成几千个冗余 token。</p>
+<p>一个可执行的最小版本如下：</p>
+<ol>
+<li>用基线模型离线生成完整轨迹，只在每 512 token 保存一个 checkpoint。</li>
+<li>只对其中一小部分 checkpoint 做 continuation/deletion，得到“继续一段是否有收益”的标签；不要对每个 checkpoint 做完整 sibling rollout。</li>
+<li>用冻结模型的 hidden state 训练一个小 stop/value head，不做昂贵的全模型 RL。</li>
+<li>在独立 calibration split 上校准早停错误风险；阈值固定后再测试。</li>
+<li>部署时默认只运行 stop/value head；只有预测不确定时才调用一次短 probe。</li>
+</ol>
+<p>论文必须报告<strong>净成本</strong>，而不只是生成 token：</p>
+<p><code>净节省 = 原始 CoT 的 transformer FLOPs - 停止器、probe、KV cache 和控制器的额外 FLOPs</code>。</p>
+<p>如果实验只报告 completion token，而不计 probe 和控制器，容易得到虚假的效率提升。建议至少报告三组结果：只用 hidden-state head、head 加 selective probe、以及朴素多 rollout 版本；这样可以清楚说明方法的科学上限和工程可用版本。</p>
 <h3 id="方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</h3>
 <h4>背景：现实中预算往往是“整场考试共享”的</h4>
 <p>大多数论文让每道题各自拥有一个独立上限：每题最多生成 8,000 token。这样做掩盖了一个实际问题：如果一次请求里有 20 道题，总共只有 100,000 token，某一道题多花 5,000 token，就意味着其他题少了 5,000 token。</p>
