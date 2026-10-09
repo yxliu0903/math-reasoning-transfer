@@ -534,6 +534,77 @@
 <p>论文必须报告<strong>净成本</strong>，而不只是生成 token：</p>
 <p><code>净节省 = 原始 CoT 的 transformer FLOPs - 停止器、probe、KV cache 和控制器的额外 FLOPs</code>。</p>
 <p>如果实验只报告 completion token，而不计 probe 和控制器，容易得到虚假的效率提升。建议至少报告三组结果：只用 hidden-state head、head 加 selective probe、以及朴素多 rollout 版本；这样可以清楚说明方法的科学上限和工程可用版本。</p>
+<h4>方向 1 的详细可实施方案（建议先做这个版本）</h4>
+<p>下面给出一个可以直接开始写代码的最小方案。它不修改基础模型，不先做全模型 RL，只训练一个小停止控制器；这样先验证研究问题是否成立，再决定是否加入 RL。</p>
+<p><strong>固定设置。</strong></p>
+<ul>
+<li>基座模型：先用 <code>DeepSeek-R1-Distill-Qwen-1.5B</code> 跑通流程，再用 <code>DeepSeek-R1-Distill-Qwen-7B</code> 做主结果。两者都冻结，不更新语言模型权重。</li>
+<li>数据：第一阶段用 GSM8K；第二阶段用 MATH-500/AMC23；最终测试用 AIME24/25 和一个完全不参与训练、校准的数学集。</li>
+<li>解码：temperature 0.6、top-p 0.95、最大推理长度 8,192 tokens；在每个 512-token checkpoint 和自然语义步骤边界检查一次。</li>
+<li>切分：严格按题目切分，70% controller training、15% calibration、15% test；同一道题的不同 rollout 和不同 prefix 不能跨 split。</li>
+<li>最小预算：前 512 tokens 不允许停止；最大预算 8,192 tokens；答案 probe 最多触发一次，避免 controller 自己制造大量开销。</li>
+</ul>
+<p><strong>数据生成。</strong></p>
+<ol>
+<li>对 training/calibration/test 的问题分别生成一条完整 CoT，并保存每个 checkpoint 的 token offset、最后一层 hidden state、KV-cache 长度、当前答案候选和 verifier 结果。</li>
+<li>对 training split 中每个 checkpoint，只抽取一小部分做离线 continuation label：从该 prefix 继续生成 <code>B=256</code> tokens，采样 <code>K=2</code> 条 continuation，然后强制结束 thinking 并用 verifier 判断答案。不是每个 checkpoint 都做完整 sibling rollout。</li>
+<li>对 calibration split 使用 <code>K=4</code> 做更稳定的阈值选择；test split 只运行控制器，不使用未来 continuation 标签。</li>
+</ol>
+<p><strong>监督信号。</strong></p>
+<p>对题目 <code>q</code> 在 checkpoint <code>t</code> 定义：</p>
+<ul>
+<li><code>y_t</code>：当前 prefix 强制回答是否正确；</li>
+<li><code>y_{t+B}^{(k)}</code>：第 <code>k</code> 条 continuation 后强制回答是否正确；</li>
+<li><code>g_t = mean_k(y_{t+B}^{(k)}) - y_t</code>：再花一个 block 的经验收益；</li>
+<li><code>c_t = 1 - y_t</code>：现在立即停止的错误指示。</li>
+</ul>
+<p>控制器输入只包含部署时可见的 <code>phi_t</code>：最后层 hidden state 的低维投影、当前答案 log-prob/entropy、最近两个 checkpoint 的答案是否变化、重复/回溯特征、当前 token 数和 KV-cache 长度。<code>g_t</code>、<code>y_{t+B}</code> 和 gold answer 只用于离线训练标签，绝不进入线上特征。</p>
+<p><strong>控制器结构。</strong></p>
+<ul>
+<li><code>correct_head(phi_t) -&gt; p_t</code>：预测当前 prefix 直接结束时正确的概率；</li>
+<li><code>gain_head(phi_t) -&gt; g_hat_t</code>：预测继续 256 tokens 的期望收益；</li>
+<li>一个两层 MLP（hidden size 256）即可，参数量远小于基座模型。</li>
+</ul>
+<p>训练损失使用 <code>BCE(p_t, y_t) + 0.5 * Huber(g_hat_t, g_t)</code>；先不加 RL。为了避免按题目长度产生偏差，loss 按题目平均，而不是按 checkpoint 数量平均。</p>
+<p><strong>线上决策。</strong></p>
+<pre><code class="language-text">生成到 checkpoint t
+如果 t &lt; 512：CONTINUE
+否则读取 p_t 和 g_hat_t
+如果 p_t &gt;= tau_safe 且 g_hat_t &lt;= tau_gain：STOP
+如果 p_t &lt; tau_safe 且 g_hat_t &gt; tau_gain：CONTINUE
+否则：触发一次短 answer probe
+    probe 仍然稳定且 p_t 较高：STOP
+    其他情况：CONTINUE
+</code></pre>
+<p><code>tau_safe</code> 和 <code>tau_gain</code> 不手工拍脑袋设置。在 calibration split 上枚举一组候选阈值，对每道题完整模拟一次停止策略；题目级损失为 <code>1[最终答案错误]</code>，成本为停止时的生成 token 数。选择在错误风险的 Clopper–Pearson 上置信界不超过 <code>alpha</code>（主结果 <code>alpha=0.05</code>，严格结果 <code>alpha=0.01</code>）时，平均 token 最少的一组阈值。这样处理了同一题多个 checkpoint 之间的相关性，比把每个 checkpoint 当成独立样本更稳妥。</p>
+<p><strong>部署成本的可核算版本。</strong></p>
+<ul>
+<li>在线 stop/gain head：每个 checkpoint 一次小 MLP；hidden state 已由正常生成得到，额外 transformer forward 为 0。</li>
+<li>checkpoint 检查频率：每 512 tokens 一次；8,192 最大长度最多 16 次。</li>
+<li>selective probe：只在不确定状态触发，最多一次，生成 16–32 个答案 token并复用已有 KV cache。</li>
+<li>离线成本：若有 <code>N</code> 条训练轨迹、平均 <code>L</code> tokens，反事实标签成本约为 <code>O(N * L/B * K * B)</code> 生成 tokens；建议先在 2,000 条题/轨迹上做 pilot，再扩展。</li>
+<li>报告指标：基座总生成 FLOPs、controller FLOPs、probe tokens、KV-cache memory、wall-clock latency，最后给出净 token/FLOP savings。</li>
+</ul>
+<p><strong>最小基线和消融。</strong></p>
+<p>主基线：Vanilla full CoT、固定 1k/2k/4k/8k budget、confidence-only early exit、answer-agreement early exit、PUMA/ConCISE、OS-Pruner、Conformal Thinking。必须做以下消融：</p>
+<ol>
+<li>只有 <code>correct_head</code>，没有 <code>gain_head</code>；</li>
+<li>只有 <code>gain_head</code>，没有风险校准；</li>
+<li>有校准但不做 counterfactual continuation；</li>
+<li>hidden-state-only 与 hidden-state + selective probe；</li>
+<li>使用完整未来轨迹标签的 upper bound，与严格 prefix-only controller 对照。</li>
+</ol>
+<p><strong>通过标准。</strong></p>
+<p>第一阶段不追求 SOTA，先判断问题是否值得继续：在 MATH-500 上，相同 accuracy 下净 token 减少至少 20%，controller+probe 的额外 FLOPs 小于节省 FLOPs 的 10%，<code>alpha=0.05</code> 的测试错误率不超过校准上界太多，并且在 AIME/跨模型测试上没有严重 underthinking。如果只能节省 completion tokens、不能节省端到端 FLOPs，或者风险在分布外题目上失效，就停止这条路线。</p>
+<p><strong>实现顺序。</strong></p>
+<ol>
+<li>只做 full CoT checkpoint 记录和 forced-answer verifier，确认每个 prefix 的标签可靠；</li>
+<li>训练 <code>correct_head</code>，先验证 confidence-only 是否有可预测性；</li>
+<li>加入少量 continuation，训练 <code>gain_head</code>；</li>
+<li>做题目级 calibration 和严格 test；</li>
+<li>最后才加入 selective probe、跨模型和真实 latency；</li>
+<li>只有当上述版本成立，才考虑把 stop head 蒸馏回基座模型或加入 RL。</li>
+</ol>
 <h3 id="方向-2-opportunity-cost-reasoning-for-shared-mathematical-budgets">方向 2：Opportunity-Cost Reasoning for Shared Mathematical Budgets</h3>
 <h4>背景：现实中预算往往是“整场考试共享”的</h4>
 <p>大多数论文让每道题各自拥有一个独立上限：每题最多生成 8,000 token。这样做掩盖了一个实际问题：如果一次请求里有 20 道题，总共只有 100,000 token，某一道题多花 5,000 token，就意味着其他题少了 5,000 token。</p>
